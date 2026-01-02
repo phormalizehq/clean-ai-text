@@ -2,25 +2,221 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>About Us - AI Text Purifier</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | CleanTextApp - Our Mission</title>
+    <meta name="description" content="Learn more about CleanTextApp and our mission to provide clean, professional AI text formatting tools.">
     <style>
-        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 20px; color: #333; }
-        a { color: #4f46e5; text-decoration: none; }
+        :root {
+            --bg: #f8fafc;
+            --container-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --border: #cbd5e1;
+            --counter-bg: #f1f5f9;
+        }
+
+        body.dark-theme {
+            --bg: #0f172a;
+            --container-bg: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --primary: #818cf8;
+            --primary-hover: #a5b4fc;
+            --border: #334155;
+            --counter-bg: #0f172a;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            transition: background-color 0.3s ease;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Top Navigation Bar */
+        nav {
+            width: 100%;
+            background: var(--container-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 15px 0;
+            display: flex;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 850px;
+            width: 90%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .container {
+            max-width: 850px;
+            width: 90%;
+            background: var(--container-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            margin: 40px 20px;
+            flex: 1;
+        }
+
+        .theme-toggle {
+            background: var(--border);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        header { text-align: center; margin-bottom: 50px; }
+        h1 { margin-bottom: 10px; font-size: 2.5rem; }
+        .description { color: var(--text-muted); font-size: 1.1rem; }
+
+        section {
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--counter-bg);
+            padding-bottom: 10px;
+        }
+
+        p { margin-bottom: 20px; font-size: 1.05rem; }
+
+        .mission-card {
+            background: var(--counter-bg);
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid var(--primary);
+            margin: 30px 0;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 30px 20px;
+            border-top: 1px solid var(--border);
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            text-align: center;
+            width: 100%;
+            max-width: 850px;
+        }
+
+        @media (max-width: 600px) {
+            .nav-container { flex-direction: column; gap: 10px; }
+            h1 { font-size: 2rem; }
+            .container { padding: 25px; }
+        }
     </style>
 </head>
-<body>
-    <h1>About AI Text Purifier</h1>
-    <p>Welcome to <strong>AI Text Purifier</strong>, your go-to utility for cleaning and formatting AI-generated content.</p>
-    
-    <h2>Our Mission</h2>
-    <p>As AI tools like ChatGPT and Claude become part of our daily lives, we noticed a recurring problem: copying text often results in messy Markdown formatting, strange symbols, and inconsistent spacing. We built this one-page tool to help professionals, students, and writers instantly "purify" their text for emails, reports, and messages.</p>
+<body id="bodyTag">
 
-    <h2>How It Works</h2>
-    <p>Our tool runs entirely in your web browser. When you paste text, our custom scripts strip away the markdown clutter while preserving the readability of your content. We also provide real-time word and character counts to help you stay within your limits.</p>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">✨ CleanTextApp</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="tips.html">Usage Guide</a>
+                <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌓 Dark Mode</button>
+            </div>
+        </div>
+    </nav>
 
-    <h2>Privacy First</h2>
-    <p>We do not store your text. Everything you paste into our editor stays on your computer and is never sent to our servers. Your data is your own.</p>
-    
-    <p><a href="index.html">← Back to Purifier</a></p>
+    <div class="container">
+        <header>
+            <h1>About CleanTextApp</h1>
+            <p class="description">Bridging the gap between AI generation and professional communication.</p>
+        </header>
+
+        <section>
+            <h2>Our Mission</h2>
+            <div class="mission-card">
+                <p>As AI tools like ChatGPT and Claude become part of our daily lives, we noticed a recurring problem: copying text often results in messy Markdown formatting, strange symbols, and inconsistent spacing.</p>
+            </div>
+            <p>We built <strong>CleanTextApp</strong> to help professionals, students, and creators instantly "purify" their text for emails, reports, and social media. Our goal is to make AI-generated content look like it was hand-crafted by you, not a machine.</p>
+        </section>
+
+        <section>
+            <h2>How It Works</h2>
+            <p>Our tool runs entirely in your web browser. When you paste text, our custom scripts strip away the markdown clutter while preserving the actual structure of your content. We provide real-time readability scores and text manipulation tools (like find-and-replace) to give you total control over the final output.</p>
+        </section>
+
+        <section>
+            <h2>Privacy First</h2>
+            <p>Your data is your business. <strong>CleanTextApp does not store your text.</strong> Everything you paste into our editor stays in your browser's local memory and is never sent to a server. When you refresh or close the page, your text is gone—ensuring your sensitive drafts remain private.</p>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 CleanTextApp.com | Designed for the Next Generation of Creators.</p>
+        <div style="margin-top: 15px;">
+            <a href="index.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Home</a>
+            <a href="tips.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Usage Guide</a>
+            <a href="about.html" style="color: var(--primary); margin-right: 15px; text-decoration: none; font-weight: bold;">About</a>
+            <a href="privacy.html" style="color: var(--text-muted); text-decoration: none;">Privacy</a>
+        </div>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            const body = document.getElementById('bodyTag');
+            body.classList.toggle('dark-theme');
+            const isDark = body.classList.contains('dark-theme');
+            localStorage.setItem('preferred-theme', isDark ? 'dark' : 'light');
+            document.getElementById('themeBtn').innerHTML = isDark ? '☀️ Light' : '🌓 Dark';
+        }
+
+        window.onload = () => {
+            if (localStorage.getItem('preferred-theme') === 'dark') {
+                document.getElementById('bodyTag').classList.add('dark-theme');
+                document.getElementById('themeBtn').innerHTML = '☀️ Light';
+            }
+        };
+    </script>
 </body>
 </html>

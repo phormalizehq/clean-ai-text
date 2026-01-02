@@ -2,32 +2,141 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Privacy Policy - AI Text Purifier</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy | CleanTextApp - Your Data Security</title>
+    <meta name="description" content="Read the CleanTextApp privacy policy. Learn how we protect your data and why your text never leaves your browser.">
     <style>
-        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 20px; color: #333; }
-    </style>
-</head>
-<body>
-    <h1>Privacy Policy</h1>
-    <p>Last Updated: 2026</p>
-    
-    <p>At AI Text Purifier, accessible from [YourDomain.com], one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by AI Text Purifier and how we use it.</p>
+        :root {
+            --bg: #f8fafc;
+            --container-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --border: #cbd5e1;
+            --counter-bg: #f1f5f9;
+        }
 
-    <h2>Log Files</h2>
-    <p>AI Text Purifier follows a standard procedure of using log files. These files log visitors when they visit websites. This is a standard part of hosting services' analytics.</p>
+        body.dark-theme {
+            --bg: #0f172a;
+            --container-bg: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --primary: #818cf8;
+            --primary-hover: #a5b4fc;
+            --border: #334155;
+            --counter-bg: #0f172a;
+        }
 
-    <h2>Google DoubleClick DART Cookie</h2>
-    <p>Google is one of a third-party vendor on our site. It also uses cookies, known as DART cookies, to serve ads to our site visitors based upon their visit to our site and other sites on the internet.</p>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            transition: background-color 0.3s ease;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-    <h2>Our Advertising Partners</h2>
-    <p>Some of advertisers on our site may use cookies and web beacons. Our advertising partners include: <b>Google AdSense.</b> Each of our advertising partners has their own Privacy Policy for their policies on user data.</p>
+        /* Top Navigation Bar */
+        nav {
+            width: 100%;
+            background: var(--container-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 15px 0;
+            display: flex;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-    <h2>Data Security</h2>
-    <p>We do not collect or store any text entered into our "Purifier" tool. All text processing is done locally on the user's browser via JavaScript.</p>
+        .nav-container {
+            max-width: 850px;
+            width: 90%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    <h2>Contact Us</h2>
-    <p>If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us.</p>
-    
-    <p><a href="index.html">← Back to Home</a></p>
-</body>
-</html>
+        .logo {
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .container {
+            max-width: 850px;
+            width: 90%;
+            background: var(--container-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            margin: 40px 20px;
+            flex: 1;
+        }
+
+        .theme-toggle {
+            background: var(--border);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        header { text-align: center; margin-bottom: 50px; }
+        h1 { margin-bottom: 10px; font-size: 2.5rem; }
+        .last-updated { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px; }
+
+        section {
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        p { margin-bottom: 20px; font-size: 1rem; }
+
+        .security-note {
+            background: rgba(16, 185, 129, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--success);
+            margin: 20px 0;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 30px 20px;
+            border-top:

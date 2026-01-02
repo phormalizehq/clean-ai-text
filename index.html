@@ -17,6 +17,7 @@
             --success: #10b981;
             --counter-bg: #f1f5f9;
             --toolbar-bg: #f8fafc;
+            --accent: #6366f1;
         }
 
         body.dark-theme {
@@ -82,17 +83,23 @@
             text-transform: uppercase;
         }
 
-        /* --- New Toolbar Styles --- */
+        /* --- Toolbar Styles --- */
         .toolbar {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin-bottom: 10px;
             background: var(--toolbar-bg);
-            padding: 10px;
+            padding: 12px;
             border-radius: 12px;
             border: 1px solid var(--border);
             flex-wrap: wrap;
             align-items: center;
+        }
+
+        .toolbar-group {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
         }
 
         .toolbar input {
@@ -103,22 +110,23 @@
             background: var(--container-bg);
             color: var(--text-main);
             font-size: 14px;
-            min-width: 120px;
+            min-width: 150px;
         }
 
         .toolbar button {
-            padding: 8px 15px;
+            padding: 8px 12px;
             background: var(--border);
             border: none;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
             color: var(--text-main);
-            font-size: 13px;
+            font-size: 12px;
             white-space: nowrap;
+            transition: background 0.2s;
         }
 
-        .toolbar button:hover { opacity: 0.9; }
+        .toolbar button:hover { background: var(--primary); color: white; }
         .toolbar button.active { background: var(--success); color: white; }
 
         /* --- Editor --- */
@@ -126,7 +134,7 @@
 
         textarea {
             width: 100%;
-            height: 280px;
+            height: 320px;
             padding: 20px;
             border: 2px solid var(--border);
             border-radius: 12px;
@@ -135,7 +143,7 @@
             color: var(--text-main);
             box-sizing: border-box;
             resize: vertical;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         textarea:focus {
@@ -145,17 +153,28 @@
 
         .counter-bar {
             display: flex;
-            gap: 20px;
+            justify-content: space-between;
             margin-top: 10px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: var(--text-muted);
             background: var(--counter-bg);
-            padding: 8px 15px;
+            padding: 10px 15px;
             border-radius: 8px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .counter-bar span b { color: var(--primary); }
+        .stats-left { display: flex; gap: 15px; }
+        .counter-bar b { color: var(--primary); }
+        .readability-tag {
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: var(--border);
+            color: var(--text-main);
+            font-size: 11px;
+            text-transform: uppercase;
+        }
 
         .action-area {
             display: grid;
@@ -176,7 +195,7 @@
 
         .btn-purify { background-color: var(--primary); color: white; }
         .btn-purify:hover { background-color: var(--primary-hover); }
-        .btn-copy { background-color: var(--success); color: white; display: block; }
+        .btn-copy { background-color: var(--success); color: white; }
 
         .status-msg { text-align: center; color: var(--success); margin-top: 15px; font-weight: 600; height: 20px; }
 
@@ -202,25 +221,37 @@
         
         <header>
             <h1>✨ AI Text Purifier</h1>
-            <p class="description">Clean Markdown formatting, fix typos, and prepare AI text for publishing.</p>
+            <p class="description">Format AI content, fix grammar, and check readability instantly.</p>
         </header>
 
         <div class="ad-placeholder">Top Ad Unit</div>
 
         <div class="editor-wrapper">
-            <!-- New Find & Replace Toolbar -->
+            <!-- Enhanced Toolbar -->
             <div class="toolbar">
-                <input type="text" id="findInput" placeholder="Find text..." onkeydown="handleEnter(event)">
-                <input type="text" id="replaceInput" placeholder="Replace with..." onkeydown="handleEnter(event)">
-                <button onclick="replaceText()" title="Replace all occurrences">Replace All</button>
-                <button onclick="toggleSpellcheck()" id="spellBtn" class="active" title="Toggle Spellcheck">ABC✓</button>
+                <div style="display:flex; width: 100%; gap: 8px; margin-bottom: 8px;">
+                    <input type="text" id="findInput" placeholder="Find text..." onkeydown="handleEnter(event)">
+                    <input type="text" id="replaceInput" placeholder="Replace with..." onkeydown="handleEnter(event)">
+                    <button onclick="replaceText()">Replace All</button>
+                </div>
+                <div class="toolbar-group">
+                    <button onclick="changeCase('upper')">UPPERCASE</button>
+                    <button onclick="changeCase('lower')">lowercase</button>
+                    <button onclick="toggleSpellcheck()" id="spellBtn" class="active">ABC✓</button>
+                </div>
             </div>
 
             <textarea id="editor" oninput="updateCounts()" spellcheck="true" placeholder="Paste your AI response here..."></textarea>
             
             <div class="counter-bar">
-                <span>Words: <b id="wordCount">0</b></span>
-                <span>Characters: <b id="charCount">0</b></span>
+                <div class="stats-left">
+                    <span>Words: <b id="wordCount">0</b></span>
+                    <span>Characters: <b id="charCount">0</b></span>
+                </div>
+                <div>
+                    Readability: <b id="readabilityScore">N/A</b> 
+                    <span id="readabilityLevel" class="readability-tag">Ready</span>
+                </div>
             </div>
         </div>
 
@@ -234,7 +265,7 @@
 
         <footer>
             <h2>Professional AI Content Formatting</h2>
-            <p>Our AI Text Purifier is a free utility designed to help professionals, students, and creators strip away messy Markdown syntax from ChatGPT, Claude, and Gemini outputs. Use the built-in Find & Replace and Spell Checker to perfect your content.</p>
+            <p>CleanTextApp helps you polish AI-generated text for professional use. Remove markdown clutter, adjust text casing, and monitor readability to ensure your content is accessible and engaging.</p>
 
             <div style="margin-top: 20px; font-size: 12px; border-top: 1px solid var(--border); padding-top: 10px;">
                 <a href="about.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">About Us</a>
@@ -244,7 +275,7 @@
     </div>
 
     <script>
-        // --- Theme Logic ---
+        // --- Theme ---
         function toggleTheme() {
             const body = document.getElementById('bodyTag');
             body.classList.toggle('dark-theme');
@@ -260,31 +291,66 @@
             }
         };
 
-        // --- Stats Logic ---
+        // --- Stats & Readability ---
         function updateCounts() {
             const text = document.getElementById('editor').value.trim();
             const words = text ? text.split(/\s+/).length : 0;
             const chars = text.length;
+            
             document.getElementById('wordCount').innerText = words;
             document.getElementById('charCount').innerText = chars;
+
+            calculateReadability(text, words);
+        }
+
+        function calculateReadability(text, wordCount) {
+            const scoreLabel = document.getElementById('readabilityScore');
+            const levelLabel = document.getElementById('readabilityLevel');
+            
+            if (wordCount < 5) {
+                scoreLabel.innerText = "N/A";
+                levelLabel.innerText = "Ready";
+                return;
+            }
+
+            // Simple readability logic: sentence count and word length
+            const sentences = text.split(/[.!?]+/).filter(x => x.length > 0).length || 1;
+            const avgWordLength = text.replace(/\s/g, '').length / wordCount;
+            const wordsPerSentence = wordCount / sentences;
+
+            // Simple score calculation (lower is easier)
+            const score = Math.round((wordsPerSentence * 0.5) + (avgWordLength * 5));
+            scoreLabel.innerText = score;
+
+            if (score < 30) {
+                levelLabel.innerText = "Simple";
+                levelLabel.style.background = "#10b981"; // Success Green
+                levelLabel.style.color = "white";
+            } else if (score < 50) {
+                levelLabel.innerText = "Average";
+                levelLabel.style.background = "#f59e0b"; // Warning Orange
+                levelLabel.style.color = "white";
+            } else {
+                levelLabel.innerText = "Complex";
+                levelLabel.style.background = "#ef4444"; // Error Red
+                levelLabel.style.color = "white";
+            }
         }
 
         // --- Core Functions ---
 
-        // 1. Purify (Remove Markdown)
         function purifyText() {
             let input = document.getElementById('editor').value;
             if(!input) return;
 
-            // Regex patterns to clean standard Markdown
             let clean = input
-                .replace(/(\*\*|__)(.*?)\1/g, "$2") // Bold
-                .replace(/(\*|_)(.*?)\1/g, "$2")    // Italic
-                .replace(/^#+\s+/gm, "")            // Headers
-                .replace(/`{1,3}.*?`{1,3}/gs, "")   // Code blocks
-                .replace(/^[*-]\s+/gm, "• ")        // Bullet points
-                .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1") // Links (keep text, remove url)
-                .replace(/\n{3,}/g, "\n\n")         // Excessive newlines
+                .replace(/(\*\*|__)(.*?)\1/g, "$2")
+                .replace(/(\*|_)(.*?)\1/g, "$2")
+                .replace(/^#+\s+/gm, "")
+                .replace(/`{1,3}.*?`{1,3}/gs, "")
+                .replace(/^[*-]\s+/gm, "• ")
+                .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
+                .replace(/\n{3,}/g, "\n\n")
                 .trim();
 
             document.getElementById('editor').value = clean;
@@ -292,54 +358,39 @@
             showStatus("Markdown Removed!");
         }
 
-        // 2. Find and Replace
+        function changeCase(type) {
+            const editor = document.getElementById('editor');
+            if (type === 'upper') editor.value = editor.value.toUpperCase();
+            if (type === 'lower') editor.value = editor.value.toLowerCase();
+            showStatus(`Changed to ${type}case`);
+        }
+
         function replaceText() {
             const findVal = document.getElementById('findInput').value;
             const replaceVal = document.getElementById('replaceInput').value;
             const editor = document.getElementById('editor');
-            
             if (!findVal || !editor.value) return;
 
-            // Use split/join for literal global replacement (avoiding regex special char issues)
-            const originalText = editor.value;
-            const newText = originalText.split(findVal).join(replaceVal);
-
-            if (originalText === newText) {
-                showStatus("Text not found.");
-            } else {
-                editor.value = newText;
-                updateCounts();
-                showStatus(`Replaced all "${findVal}"`);
-            }
+            editor.value = editor.value.split(findVal).join(replaceVal);
+            updateCounts();
+            showStatus("Text Replaced");
         }
 
-        // Allow pressing "Enter" inside inputs to trigger replace
-        function handleEnter(e) {
-            if (e.key === "Enter") replaceText();
-        }
+        function handleEnter(e) { if (e.key === "Enter") replaceText(); }
 
-        // 3. Toggle Spellcheck
         function toggleSpellcheck() {
             const editor = document.getElementById('editor');
             const btn = document.getElementById('spellBtn');
-            const current = editor.getAttribute('spellcheck');
+            const isTrue = editor.getAttribute('spellcheck') === 'true';
             
-            if (current === 'true') {
-                editor.setAttribute('spellcheck', 'false');
-                btn.classList.remove('active');
-                showStatus("Spellcheck Off");
-            } else {
-                editor.setAttribute('spellcheck', 'true');
-                btn.classList.add('active');
-                showStatus("Spellcheck On");
-            }
-            // Force refresh of the element to apply spellcheck changes in some browsers
-            const val = editor.value;
-            editor.value = '';
-            editor.value = val;
+            editor.setAttribute('spellcheck', !isTrue);
+            btn.classList.toggle('active');
+            showStatus(`Spellcheck ${!isTrue ? 'On' : 'Off'}`);
+            
+            // Refresh textarea
+            const v = editor.value; editor.value = ''; editor.value = v;
         }
 
-        // 4. Copy to Clipboard
         function copyText() {
             const textArea = document.getElementById('editor');
             textArea.select();
@@ -347,11 +398,9 @@
             showStatus("Copied to Clipboard!");
         }
 
-        // Utility: Status Message
         function showStatus(msg) {
             const statusDiv = document.getElementById('status');
             statusDiv.innerText = msg;
-            // Clear message after 3 seconds
             setTimeout(() => { statusDiv.innerText = ""; }, 3000);
         }
     </script>

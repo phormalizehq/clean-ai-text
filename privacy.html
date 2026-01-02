@@ -139,4 +139,97 @@
         footer {
             margin-top: auto;
             padding: 30px 20px;
-            border-top:
+            border-top: 1px solid var(--border);
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            text-align: center;
+            width: 100%;
+            max-width: 850px;
+        }
+
+        @media (max-width: 600px) {
+            .nav-container { flex-direction: column; gap: 10px; }
+            h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body id="bodyTag">
+
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">✨ CleanTextApp</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="tips.html">Usage Guide</a>
+                <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌓 Dark Mode</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>Privacy Policy</h1>
+            <p class="last-updated">Last Updated: 2026</p>
+        </header>
+
+        <section>
+            <p>At <strong>CleanTextApp</strong>, accessible from cleantextapp.com, one of our main priorities is the privacy of our visitors. This document outlines the types of information collected and how it is used.</p>
+        </section>
+
+        <section>
+            <h2>Zero Data Storage Policy</h2>
+            <div class="security-note">
+                <strong>Important:</strong> We do not collect, save, or store any text entered into our "Purifier" tool. All text processing and formatting are performed locally on your device via JavaScript. Your content never leaves your browser.
+            </div>
+        </section>
+
+        <section>
+            <h2>Log Files</h2>
+            <p>CleanTextApp follows a standard procedure of using log files. These files log visitors when they visit websites. This is a standard practice for hosting companies and part of hosting services' analytics. The information collected includes IP addresses, browser type, Internet Service Provider (ISP), date/time stamp, and referring/exit pages.</p>
+        </section>
+
+        <section>
+            <h2>Advertising Partners</h2>
+            <p>We may use third-party vendors, such as <strong>Google</strong>, who use cookies to serve ads based on a user's prior visits to our website or other websites. Google's use of advertising cookies enables it and its partners to serve ads to our users based on their visit to CleanTextApp and other sites on the Internet.</p>
+            <p>You may opt out of personalized advertising by visiting Ads Settings or <a href="https://www.aboutads.info" target="_blank" style="color: var(--primary);">www.aboutads.info</a>.</p>
+        </section>
+
+        <section>
+            <h2>Third Party Privacy Policies</h2>
+            <p>CleanTextApp's Privacy Policy does not apply to other advertisers or websites. Thus, we are advising you to consult the respective Privacy Policies of these third-party ad servers for more detailed information.</p>
+        </section>
+
+        <section>
+            <h2>Contact Us</h2>
+            <p>If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us at support@cleantextapp.com.</p>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 CleanTextApp.com | Designed for the Next Generation of Creators.</p>
+        <div style="margin-top: 15px;">
+            <a href="index.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Home</a>
+            <a href="tips.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Usage Guide</a>
+            <a href="about.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">About</a>
+            <a href="privacy.html" style="color: var(--primary); text-decoration: none; font-weight: bold;">Privacy</a>
+        </div>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            const body = document.getElementById('bodyTag');
+            body.classList.toggle('dark-theme');
+            const isDark = body.classList.contains('dark-theme');
+            localStorage.setItem('preferred-theme', isDark ? 'dark' : 'light');
+            document.getElementById('themeBtn').innerHTML = isDark ? '☀️ Light' : '🌓 Dark';
+        }
+
+        window.onload = () => {
+            if (localStorage.getItem('preferred-theme') === 'dark') {
+                document.getElementById('bodyTag').classList.add('dark-theme');
+                document.getElementById('themeBtn').innerHTML = '☀️ Light';
+            }
+        };
+    </script>
+</body>
+</html>

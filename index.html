@@ -176,7 +176,7 @@
 
         .btn-purify { background-color: var(--primary); color: white; }
         .btn-purify:hover { background-color: var(--primary-hover); }
-        .btn-copy { background-color: var(--success); color: white; display: none; }
+        .btn-copy { background-color: var(--success); color: white; display: block; }
 
         .status-msg { text-align: center; color: var(--success); margin-top: 15px; font-weight: 600; height: 20px; }
 
@@ -288,7 +288,6 @@
                 .trim();
 
             document.getElementById('editor').value = clean;
-            document.getElementById('copyBtn').style.display = 'block';
             updateCounts();
             showStatus("Markdown Removed!");
         }
@@ -311,7 +310,6 @@
                 editor.value = newText;
                 updateCounts();
                 showStatus(`Replaced all "${findVal}"`);
-                document.getElementById('copyBtn').style.display = 'block';
             }
         }
 

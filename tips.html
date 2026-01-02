@@ -69,8 +69,13 @@
             font-size: 1.2rem;
         }
 
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
         .nav-links a {
-            margin-left: 20px;
             text-decoration: none;
             color: var(--text-main);
             font-weight: 600;
@@ -149,7 +154,7 @@
 
         @media (max-width: 600px) {
             .nav-container { flex-direction: column; gap: 10px; }
-            .nav-links a { margin: 0 10px; }
+            .nav-links a { margin: 0 5px; }
             h1 { font-size: 1.8rem; }
         }
     </style>

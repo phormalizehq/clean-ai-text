@@ -38,31 +38,76 @@
             color: var(--text-main);
             transition: background-color 0.3s ease;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Top Navigation Bar */
+        nav {
+            width: 100%;
+            background: var(--container-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 15px 0;
             display: flex;
             justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 850px;
+            width: 90%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
         }
 
         .container {
             max-width: 850px;
-            width: 100%;
+            width: 90%;
             background: var(--container-bg);
             padding: 40px;
             border-radius: 16px;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            margin: 40px 20px;
             position: relative;
         }
 
         .theme-toggle {
-            position: absolute;
-            top: 20px;
-            right: 20px;
             background: var(--border);
             border: none;
-            padding: 8px 15px;
+            padding: 6px 12px;
             border-radius: 20px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 12px;
             color: var(--text-main);
             font-weight: 600;
         }
@@ -201,14 +246,17 @@
 
         footer {
             margin-top: 40px;
-            padding-top: 30px;
+            padding: 30px 20px;
             border-top: 1px solid var(--border);
             font-size: 0.95rem;
             color: var(--text-muted);
-            line-height: 1.6;
+            text-align: center;
+            width: 100%;
+            max-width: 850px;
         }
 
         @media (max-width: 600px) {
+            .nav-container { flex-direction: column; gap: 10px; }
             .toolbar { flex-direction: column; align-items: stretch; }
             .action-area { grid-template-columns: 1fr; }
         }
@@ -216,9 +264,18 @@
 </head>
 <body id="bodyTag">
 
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">✨ CleanTextApp</a>
+            <div class="nav-links">
+                <a href="index.html" style="color: var(--primary);">Home</a>
+                <a href="tips.html">Usage Guide</a>
+                <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌓 Dark Mode</button>
+            </div>
+        </div>
+    </nav>
+
     <div class="container">
-        <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌓 Dark Mode</button>
-        
         <header>
             <h1>✨ AI Text Purifier</h1>
             <p class="description">Format AI content, fix grammar, and check readability instantly.</p>
@@ -227,7 +284,6 @@
         <div class="ad-placeholder">Top Ad Unit</div>
 
         <div class="editor-wrapper">
-            <!-- Enhanced Toolbar -->
             <div class="toolbar">
                 <div style="display:flex; width: 100%; gap: 8px; margin-bottom: 8px;">
                     <input type="text" id="findInput" placeholder="Find text..." onkeydown="handleEnter(event)">
@@ -263,32 +319,36 @@
 
         <div class="ad-placeholder" style="height: 100px;">Middle Ad Unit</div>
 
-        <footer>
-            <h2>Professional AI Content Formatting</h2>
-            <p>CleanTextApp helps you polish AI-generated text for professional use. Remove markdown clutter, adjust text casing, and monitor readability to ensure your content is accessible and engaging.</p>
-
-            <div style="margin-top: 20px; font-size: 12px; border-top: 1px solid var(--border); padding-top: 10px;">
-                <a href="about.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">About Us</a>
-                <a href="privacy.html" style="color: var(--text-muted); text-decoration: none;">Privacy Policy</a>
-                <a href="tips.html" style="color: var(--text-muted); text-decoration: none;">How To Use This Website</a>
-            </div>
-        </footer>
+        <div style="margin-top: 30px;">
+            <h2 style="font-size: 1.4rem;">Professional AI Content Formatting</h2>
+            <p style="color: var(--text-muted); line-height: 1.6;">CleanTextApp helps you polish AI-generated text for professional use. Remove markdown clutter, adjust text casing, and monitor readability to ensure your content is accessible and engaging.</p>
+        </div>
     </div>
 
+    <footer>
+        <p>&copy; 2024 CleanTextApp.com | Designed for the Next Generation of Creators.</p>
+        <div style="margin-top: 15px;">
+            <a href="index.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Home</a>
+            <a href="tips.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Usage Guide</a>
+            <a href="about.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">About</a>
+            <a href="privacy.html" style="color: var(--text-muted); text-decoration: none;">Privacy</a>
+        </div>
+    </footer>
+
     <script>
-        // --- Theme ---
+        // --- Theme Logic (Synced with tips.html) ---
         function toggleTheme() {
             const body = document.getElementById('bodyTag');
             body.classList.toggle('dark-theme');
             const isDark = body.classList.contains('dark-theme');
             localStorage.setItem('preferred-theme', isDark ? 'dark' : 'light');
-            document.getElementById('themeBtn').innerHTML = isDark ? '☀️ Light Mode' : '🌓 Dark Mode';
+            document.getElementById('themeBtn').innerHTML = isDark ? '☀️ Light' : '🌓 Dark';
         }
 
         window.onload = () => {
             if (localStorage.getItem('preferred-theme') === 'dark') {
                 document.getElementById('bodyTag').classList.add('dark-theme');
-                document.getElementById('themeBtn').innerHTML = '☀️ Light Mode';
+                document.getElementById('themeBtn').innerHTML = '☀️ Light';
             }
         };
 
@@ -311,35 +371,33 @@
             if (wordCount < 5) {
                 scoreLabel.innerText = "N/A";
                 levelLabel.innerText = "Ready";
+                levelLabel.style.background = "var(--border)";
                 return;
             }
 
-            // Simple readability logic: sentence count and word length
             const sentences = text.split(/[.!?]+/).filter(x => x.length > 0).length || 1;
             const avgWordLength = text.replace(/\s/g, '').length / wordCount;
             const wordsPerSentence = wordCount / sentences;
 
-            // Simple score calculation (lower is easier)
             const score = Math.round((wordsPerSentence * 0.5) + (avgWordLength * 5));
             scoreLabel.innerText = score;
 
             if (score < 30) {
                 levelLabel.innerText = "Simple";
-                levelLabel.style.background = "#10b981"; // Success Green
+                levelLabel.style.background = "#10b981";
                 levelLabel.style.color = "white";
             } else if (score < 50) {
                 levelLabel.innerText = "Average";
-                levelLabel.style.background = "#f59e0b"; // Warning Orange
+                levelLabel.style.background = "#f59e0b";
                 levelLabel.style.color = "white";
             } else {
                 levelLabel.innerText = "Complex";
-                levelLabel.style.background = "#ef4444"; // Error Red
+                levelLabel.style.background = "#ef4444";
                 levelLabel.style.color = "white";
             }
         }
 
         // --- Core Functions ---
-
         function purifyText() {
             let input = document.getElementById('editor').value;
             if(!input) return;
@@ -388,7 +446,6 @@
             btn.classList.toggle('active');
             showStatus(`Spellcheck ${!isTrue ? 'On' : 'Off'}`);
             
-            // Refresh textarea
             const v = editor.value; editor.value = ''; editor.value = v;
         }
 
@@ -407,4 +464,3 @@
     </script>
 </body>
 </html>
-

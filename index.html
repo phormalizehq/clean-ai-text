@@ -68,12 +68,12 @@
             <button class="main-btn btn-purify" onclick="purifyText()">✨ Purify Text</button>
             
             <div class="secondary-actions">
-                <button class="main-btn btn-copy" id="copyBtn" onclick="copyText()">📋 Copy to Clipboard</button>
-                <button class="main-btn btn-clear" onclick="clearText()">🗑️ Clear All</button>
+                <button class="main-btn btn-copy" id="copyBtn" onclick="copyText()">📋 Copy</button>
+                <button class="main-btn btn-clear" onclick="clearText()">🗑️ Clear</button>
             </div>
-            
-            <div id="statusMessage" style="height: 24px; margin-top: 10px; font-weight: 600; color: var(--success); transition: opacity 0.3s; opacity: 0;"></div>
         </div>
+
+        <div id="statusMessage" style="height: 24px; margin-top: 15px; text-align: center; font-weight: 600; color: var(--success); transition: opacity 0.3s; opacity: 0;"></div>
 
         <div class="ad-placeholder" style="height: 100px;">Middle Ad Unit</div>
 
@@ -84,7 +84,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2026 CleanTextApp.com | Designed for the Next Generation of Creators.</p>
+        <p>&copy; 2026 CleanTextApp.com | Designed for Creators.</p>
         <div style="margin-top: 15px;">
             <a href="index.html" style="color: var(--primary); font-weight: bold; margin-right: 15px; text-decoration: none;">Home</a>
             <a href="tips.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Usage Guide</a>
@@ -206,7 +206,6 @@
             btn.classList.toggle('active');
             showStatus(`Spellcheck ${!isTrue ? 'On' : 'Off'}`);
             
-            // Forces the browser to refresh spellcheck underlines
             const v = editor.value; editor.value = ''; editor.value = v;
         }
 
@@ -244,7 +243,6 @@
             showStatus("Workspace Cleared ✨");
         }
 
-        // --- Unified Status Helper ---
         function showStatus(msg) {
             const status = document.getElementById('statusMessage');
             if (!status) return;
@@ -255,11 +253,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-

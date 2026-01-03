@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found | CleanTextApp</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+</head>
+<body id="bodyTag">
+
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">✨ CleanTextApp</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌓 Dark Mode</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" style="text-align: center; padding: 80px 40px;">
+        <h1 style="font-size: 4rem; color: var(--primary);">404</h1>
+        <h2>Oops! Page Not Found</h2>
+        <p class="description">The page you're looking for doesn't exist or has been moved.</p>
+        
+        <div style="margin-top: 30px;">
+            <a href="index.html" class="main-btn btn-purify" style="text-decoration: none; display: inline-flex;">
+                Return to Home
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const body = document.getElementById('bodyTag');
+            body.classList.toggle('dark-theme');
+            const isDark = body.classList.contains('dark-theme');
+            localStorage.setItem('preferred-theme', isDark ? 'dark' : 'light');
+            document.getElementById('themeBtn').innerHTML = isDark ? '☀️ Light' : '🌓 Dark';
+        }
+
+        window.onload = () => {
+            if (localStorage.getItem('preferred-theme') === 'dark') {
+                document.getElementById('bodyTag').classList.add('dark-theme');
+                document.getElementById('themeBtn').innerHTML = '☀️ Light';
+            }
+        };
+    </script>
+</body>
+</html>

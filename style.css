@@ -239,4 +239,108 @@ textarea:focus {
     border-radius: 4px;
     background: var(--border);
     color: var(--text-main);
-    font-
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+/* --- Action Area (One Line Button Layout) --- */
+.action-area {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    margin-top: 25px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.secondary-actions {
+    display: flex;
+    gap: 12px;
+    flex: 1.2;
+}
+
+.main-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.btn-purify {
+    background-color: var(--primary);
+    color: white;
+    flex: 1; /* Makes Purify prominent */
+}
+
+.btn-purify:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.btn-copy, .btn-clear {
+    flex: 1;
+    background-color: var(--counter-bg);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+}
+
+.btn-copy:hover {
+    background-color: var(--border);
+}
+
+.btn-clear:hover {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border-color: #fecaca;
+}
+
+.dark-theme .btn-clear:hover {
+    background-color: #450a0a;
+    color: #f87171;
+    border-color: #7f1d1d;
+}
+
+#statusMessage {
+    height: 24px;
+    text-align: center;
+    color: var(--success);
+    margin-top: 15px;
+    font-weight: 600;
+    transition: opacity 0.3s;
+}
+
+/* --- Footer --- */
+footer {
+    margin-top: 40px;
+    padding: 30px 20px;
+    border-top: 1px solid var(--border);
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    text-align: center;
+    width: 100%;
+    max-width: 850px;
+}
+
+/* --- Responsive Layout --- */
+@media (max-width: 700px) {
+    .action-area {
+        flex-direction: column;
+    }
+    
+    .secondary-actions {
+        width: 100%;
+    }
+
+    .main-btn, .btn-purify, .btn-copy, .btn-clear {
+        width: 100%;
+    }
+}

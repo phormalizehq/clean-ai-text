@@ -95,8 +95,8 @@
             text = text.replace(/([a-zA-Z0-9])([^a-zA-Z0-9\-\/\s])([a-zA-Z0-9])/g, "$1$3");
 
             // 3. Sentence Case: Capitalize first word of sentences
-            // Handles starts of strings and words after . ! ?
-            text = text.toLowerCase().replace(/(^\s*|[.!?]\s+)([a-z])/g, (m) => m.toUpperCase());
+            // Only fixes sentence starts without forcing everything else to lowercase
+            text = text.replace(/(^\s*|[.!?]\s+)([a-z])/g, (m) => m.toUpperCase());
 
             editor.value = text.trim();
             updateCounts();
@@ -135,6 +135,19 @@
             editor.value = editor.value.split(findVal).join(replaceVal);
             updateCounts();
             showStatus("Text Replaced");
+        }
+
+        function changeCase(type) {
+            const editor = document.getElementById('editor');
+            if (!editor.value) return;        
+            if (type === 'upper') {
+                editor.value = editor.value.toUpperCase();
+                showStatus("Converted to UPPERCASE");
+            } else if (type === 'lower') {
+                editor.value = editor.value.toLowerCase();
+                showStatus("converted to lowercase");
+            }    
+            updateCounts();
         }
 
         function handleEnter(e) { if (e.key === "Enter") replaceText(); }
@@ -182,5 +195,6 @@
     </script>
 </body>
 </html>
+
 
 

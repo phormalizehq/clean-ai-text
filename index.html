@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">  
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
     <style>
-        /* Adding a small style for the word frequency chips */
+        /* Word frequency chips */
         .frequency-container {
             margin-top: 15px;
             padding: 10px;
@@ -23,6 +23,49 @@
             padding: 2px 8px;
             border-radius: 4px;
             margin: 3px;
+            font-weight: bold;
+        }
+
+        /* Improved Toolbar Layout for Find/Replace */
+        .find-replace-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .find-replace-row input {
+            flex: 2; /* Makes input boxes much wider */
+            min-width: 120px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .find-replace-row .toolbar-group {
+            flex: 1; /* Keeps buttons in a tighter group */
+            display: flex;
+            gap: 4px;
+            min-width: fit-content;
+        }
+
+        .find-replace-row button {
+            padding: 6px 10px; /* Smaller button padding */
+            font-size: 12px;   /* Smaller button text */
+            white-space: nowrap;
+        }
+
+        .btn-small-clear {
+            background: #ff4d4d !important;
+            color: white !important;
+            width: 30px;
+            padding: 0 !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: bold;
         }
     </style>
@@ -47,15 +90,16 @@
         <div class="editor-wrapper">
             <div class="toolbar">
                 <div class="find-replace-row">
-                    <input type="text" id="findInput" placeholder="Find..." oninput="resetSearch()" onkeydown="handleEnter(event)">
-                    <input type="text" id="replaceInput" placeholder="Replace..." onkeydown="handleEnter(event)">
+                    <input type="text" id="findInput" placeholder="Find text..." oninput="resetSearch()" onkeydown="handleEnter(event)">
+                    <input type="text" id="replaceInput" placeholder="Replace with..." onkeydown="handleEnter(event)">
                     <div class="toolbar-group">
                         <button onclick="highlightText()" style="background: var(--primary); color: white;">Find</button>
                         <button onclick="replaceText()" style="background: var(--primary); color: white;">Replace All</button>
-                        <button onclick="clearFindReplace()" title="Clear find/replace boxes" style="background: #ff4d4d; color: white; min-width: 30px;">✕</button>
+                        <button onclick="clearFindReplace()" class="btn-small-clear" title="Clear Inputs">✕</button>
                     </div>
                 </div>
-                <div class="toolbar-group">
+                
+                <div class="toolbar-group" style="margin-top: 5px;">
                     <button onclick="changeCase('upper')">UPPERCASE</button>
                     <button onclick="changeCase('lower')">lowercase</button>
                     <button onclick="changeCase('title')">Title Case</button>
@@ -166,7 +210,7 @@
 
         const sorted = Object.entries(counts)
             .sort((a, b) => b[1] - a[1])
-            .slice(0, 8); // Top 8 words
+            .slice(0, 8); 
 
         if (sorted.length > 0) {
             freqArea.style.display = 'block';
@@ -205,6 +249,7 @@
         document.getElementById('findInput').value = "";
         document.getElementById('replaceInput').value = "";
         resetSearch();
+        showStatus("Inputs Cleared");
     }
 
     // --- UTILITIES ---

@@ -76,125 +76,124 @@
     </footer>
 
     <script>
-        // --- NEW PURIFY LOGIC ---
-        function purifyText() {
-            let editor = document.getElementById('editor');
-            let text = editor.value;
-            if(!text) return;
+    // --- UPDATED PURIFY LOGIC ---
+    function purifyText() {
+        let editor = document.getElementById('editor');
+        let text = editor.value;
+        if(!text) return;
 
-            // 1. Remove Markdown Formatting first
-            text = text.replace(/(\*\*|__)(.*?)\1/g, "$2")
-                       .replace(/(\*|_)(.*?)\1/g, "$2")
-                       .replace(/^#+\s+/gm, "")
-                       .replace(/`{1,3}.*?`{1,3}/gs, "")
-                       .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
-                       .replace(/^[*-]\s+/gm, "• ");
+        // 1. Remove Markdown Formatting
+        text = text.replace(/(\*\*|__)(.*?)\1/g, "$2")
+                   .replace(/(\*|_)(.*?)\1/g, "$2")
+                   .replace(/^#+\s+/gm, "")
+                   .replace(/`{1,3}.*?`{1,3}/gs, "")
+                   .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
+                   .replace(/^[*-]\s+/gm, "• ");
 
-            // 2. Remove special characters INSIDE words except '-' and '/'
-            // This logic looks for special chars that are surrounded by letters
-            text = text.replace(/([a-zA-Z0-9])([^a-zA-Z0-9\-\/\s])([a-zA-Z0-9])/g, "$1$3");
+        // 2. Clean up weird mid-word symbols (protects NASA)
+        // Only removes symbols if they are NOT letters or numbers
+        text = text.replace(/([a-zA-Z0-9])([^a-zA-Z0-9\-\/\s\.!?])([a-zA-Z0-9])/g, "$1$3");
 
-            // 3. Sentence Case: Capitalize first word of sentences
-            // Only fixes sentence starts without forcing everything else to lowercase
-            text = text.replace(/(^\s*|[.!?]\s+)([a-z])/g, (m) => m.toUpperCase());
+        // 3. Sentence Case: ONLY capitalize the start of sentences
+        // This regex looks for the start of the text or a punctuation mark followed by a space
+        // and then a lowercase letter, turning only that letter into Uppercase.
+        text = text.replace(/(^\s*|[.!?]\s+)([a-z])/g, (m) => m.toUpperCase());
 
-            editor.value = text.trim();
-            updateCounts();
-            showStatus("Text Purified! ✨");
+        editor.value = text.trim();
+        updateCounts();
+        showStatus("Text Purified! ✨");
+    }
+
+    // --- CASE CONVERSION ---
+    function changeCase(type) {
+        const editor = document.getElementById('editor');
+        if (!editor || !editor.value) return; 
+
+        if (type === 'upper') {
+            editor.value = editor.value.toUpperCase();
+            showStatus("Converted to UPPERCASE");
+        } else if (type === 'lower') {
+            editor.value = editor.value.toLowerCase();
+            showStatus("converted to lowercase");
+        }    
+        updateCounts();
+    }
+
+    // --- HELPER FUNCTIONS ---
+    function toggleTheme() {
+        const body = document.getElementById('bodyTag');
+        body.classList.toggle('dark-theme');
+        const isDark = body.classList.contains('dark-theme');
+        localStorage.setItem('preferred-theme', isDark ? 'dark' : 'light');
+        document.getElementById('themeBtn').innerHTML = isDark ? '☀️ Light' : '🌓 Dark';
+    }
+
+    window.onload = () => {
+        if (localStorage.getItem('preferred-theme') === 'dark') {
+            document.getElementById('bodyTag').classList.add('dark-theme');
+            document.getElementById('themeBtn').innerHTML = '☀️ Light';
         }
+    };
 
-        // --- Keep previous helper functions (toggleTheme, updateCounts, etc.) ---
-        function toggleTheme() {
-            const body = document.getElementById('bodyTag');
-            body.classList.toggle('dark-theme');
-            const isDark = body.classList.contains('dark-theme');
-            localStorage.setItem('preferred-theme', isDark ? 'dark' : 'light');
-            document.getElementById('themeBtn').innerHTML = isDark ? '☀️ Light' : '🌓 Dark';
+    function updateCounts() {
+        const text = document.getElementById('editor').value.trim();
+        const words = text ? text.split(/\s+/).length : 0;
+        const chars = text.length;
+        document.getElementById('wordCount').innerText = words;
+        document.getElementById('charCount').innerText = chars;
+    }
+
+    function replaceText() {
+        const findVal = document.getElementById('findInput').value;
+        const replaceVal = document.getElementById('replaceInput').value;
+        const editor = document.getElementById('editor');
+        if (!findVal || !editor.value) return;
+        // Use a global regex to replace all instances
+        const escapedFind = findVal.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        editor.value = editor.value.replace(new RegExp(escapedFind, 'g'), replaceVal);
+        updateCounts();
+        showStatus("Text Replaced");
+    }
+
+    function handleEnter(e) { if (e.key === "Enter") replaceText(); }
+
+    async function copyText() {
+        const editor = document.getElementById('editor');
+        try {
+            await navigator.clipboard.writeText(editor.value);
+            showStatus("Copied to clipboard!");
+        } catch (err) { showStatus("Failed to copy"); }
+    }
+
+    function clearText() {
+        document.getElementById('editor').value = "";
+        updateCounts();
+        showStatus("Workspace Cleared ✨");
+    }
+
+    function showStatus(msg) {
+        const status = document.getElementById('statusMessage');
+        status.innerText = msg;
+        status.style.opacity = "1";
+        setTimeout(() => { status.style.opacity = "0"; }, 2000);
+    }
+
+    function toggleSpellcheck() {
+        const editor = document.getElementById('editor');
+        const btn = document.getElementById('spellBtn');
+        const isTrue = editor.getAttribute('spellcheck') === 'true';
+        editor.setAttribute('spellcheck', !isTrue);
+        btn.classList.toggle('active');
+        const v = editor.value; editor.value = ''; editor.value = v;
+    }
+
+    function confirmRefresh() {
+        if (confirm("Do you want to clear your current session and refresh the page?")) {
+            window.location.reload();
+        } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-
-        window.onload = () => {
-            if (localStorage.getItem('preferred-theme') === 'dark') {
-                document.getElementById('bodyTag').classList.add('dark-theme');
-                document.getElementById('themeBtn').innerHTML = '☀️ Light';
-            }
-        };
-
-        function updateCounts() {
-            const text = document.getElementById('editor').value.trim();
-            const words = text ? text.split(/\s+/).length : 0;
-            const chars = text.length;
-            document.getElementById('wordCount').innerText = words;
-            document.getElementById('charCount').innerText = chars;
-        }
-
-        function replaceText() {
-            const findVal = document.getElementById('findInput').value;
-            const replaceVal = document.getElementById('replaceInput').value;
-            const editor = document.getElementById('editor');
-            if (!findVal || !editor.value) return;
-            editor.value = editor.value.split(findVal).join(replaceVal);
-            updateCounts();
-            showStatus("Text Replaced");
-        }
-
-        function changeCase(type) {
-            const editor = document.getElementById('editor');
-            if (!editor.value) return;        
-            if (type === 'upper') {
-                editor.value = editor.value.toUpperCase();
-                showStatus("Converted to UPPERCASE");
-            } else if (type === 'lower') {
-                editor.value = editor.value.toLowerCase();
-                showStatus("converted to lowercase");
-            }    
-            updateCounts();
-        }
-
-        function handleEnter(e) { if (e.key === "Enter") replaceText(); }
-
-        async function copyText() {
-            const editor = document.getElementById('editor');
-            try {
-                await navigator.clipboard.writeText(editor.value);
-                showStatus("Copied to clipboard!");
-            } catch (err) { showStatus("Failed to copy"); }
-        }
-
-        function clearText() {
-            document.getElementById('editor').value = "";
-            updateCounts();
-            showStatus("Workspace Cleared ✨");
-        }
-
-        function showStatus(msg) {
-            const status = document.getElementById('statusMessage');
-            status.innerText = msg;
-            status.style.opacity = "1";
-            setTimeout(() => { status.style.opacity = "0"; }, 2000);
-        }
-
-        function toggleSpellcheck() {
-            const editor = document.getElementById('editor');
-            const btn = document.getElementById('spellBtn');
-            const isTrue = editor.getAttribute('spellcheck') === 'true';
-            editor.setAttribute('spellcheck', !isTrue);
-            btn.classList.toggle('active');
-            const v = editor.value; editor.value = ''; editor.value = v;
-        }
-
-        function confirmRefresh() {
-            const userChoice = confirm("Do you want to clear your current session and refresh the page?");            
-            if (userChoice) {
-                // Yes: Refresh the page
-                window.location.reload();
-            } else {
-                // No: Just scroll to top
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }
+    }
     </script>
 </body>
 </html>
-
-
-

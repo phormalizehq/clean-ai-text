@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cleantextapp.com/sitemap.xml

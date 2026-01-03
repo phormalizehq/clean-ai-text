@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How-To Guide | CleanTextApp</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+</head>
+<body id="bodyTag">
+
+    <nav id="top">
+        <div class="nav-container">
+            <a href="index.html" class="logo">✨ CleanTextApp</a>
+            <div class="nav-links">
+                <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌓 Dark Mode</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>📖 How-To Use AI Text Purifier</h1>
+            <p class="description">Master the tools to make your AI-generated content professional and clean.</p>
+        </header>
+
+        <section style="line-height: 1.8;">
+            <h2 style="color: var(--primary);">1. Basic Purification</h2>
+            <p>Paste your text from ChatGPT, Claude, or Gemini and click <strong>Purify Text</strong>. Our algorithm automatically:</p>
+            <ul>
+                <li>Removes Markdown characters (**, #, `).</li>
+                <li>Cleans up symbols <em>inside</em> words while keeping hyphens and slashes.</li>
+                <li>Fixes sentence casing (capitalizing the first letter of sentences).</li>
+            </ul>
+
+            <h2 style="color: var(--primary); margin-top: 30px;">2. Find & Replace</h2>
+            <p>Use the toolbar to quickly swap out specific words or phrases. On mobile, these inputs will stack vertically to give you more room to type.</p>
+
+            <h2 style="color: var(--primary); margin-top: 30px;">3. Case Formatting</h2>
+            <p>Quickly convert your entire document to <strong>UPPERCASE</strong> or <strong>lowercase</strong> using the one-click buttons in the toolbar.</p>
+        </section>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="index.html" class="main-btn btn-purify" style="text-decoration: none; display: inline-flex;">Back to Purifier</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 CleanTextApp.com</p>
+        <div style="margin-top: 15px;">
+            <a href="index.html" style="color: var(--primary); font-weight: bold; margin-right: 15px; text-decoration: none;">Home</a>
+            <a href="how-to.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">How-To</a>
+            <a href="about.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">About</a>
+            <a href="contact.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Contact</a>
+            <a href="privacy.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Privacy</a>
+            <a href="terms.html" style="color: var(--text-muted); text-decoration: none;">Terms</a>
+        </div>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            const body = document.getElementById('bodyTag');
+            body.classList.toggle('dark-theme');
+            const isDark = body.classList.contains('dark-theme');
+            localStorage.setItem('preferred-theme', isDark ? 'dark' : 'light');
+            document.getElementById('themeBtn').innerHTML = isDark ? '☀️ Light' : '🌓 Dark';
+        }
+
+        window.onload = () => {
+            if (localStorage.getItem('preferred-theme') === 'dark') {
+                document.getElementById('bodyTag').classList.add('dark-theme');
+                document.getElementById('themeBtn').innerHTML = '☀️ Light';
+            }
+        };
+    </script>
+</body>
+</html>

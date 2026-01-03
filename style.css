@@ -71,18 +71,6 @@ nav {
     gap: 20px;
 }
 
-.nav-links a {
-    text-decoration: none;
-    color: var(--text-main);
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: color 0.2s;
-}
-
-.nav-links a:hover {
-    color: var(--primary);
-}
-
 /* --- Main Layout --- */
 .container {
     max-width: 850px;
@@ -122,49 +110,44 @@ h1 {
     margin-bottom: 25px;
 }
 
-.ad-placeholder {
-    background: rgba(0, 0, 0, 0.03);
-    border: 1px dashed var(--border);
-    text-align: center;
-    padding: 20px;
-    margin: 20px 0;
-    color: var(--text-muted);
-    border-radius: 8px;
-    font-size: 12px;
-    text-transform: uppercase;
-}
-
-/* --- Toolbar --- */
+/* --- Updated Toolbar (Mobile Overflow Fix) --- */
 .toolbar {
     display: flex;
-    gap: 8px;
-    margin-bottom: 10px;
+    flex-direction: column; /* Stacks rows vertically */
+    gap: 10px;
+    margin-bottom: 15px;
     background: var(--toolbar-bg);
     padding: 12px;
     border-radius: 12px;
     border: 1px solid var(--border);
-    flex-wrap: wrap;
-    align-items: center;
 }
 
-.toolbar-group {
+.find-replace-row {
     display: flex;
-    gap: 5px;
-    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
 }
 
 .toolbar input {
     flex: 1;
+    min-width: 0; /* Critical for preventing overflow on mobile */
     padding: 8px 12px;
     border: 1px solid var(--border);
     border-radius: 6px;
     background: var(--container-bg);
     color: var(--text-main);
     font-size: 14px;
-    min-width: 150px;
+}
+
+.toolbar-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    width: 100%;
 }
 
 .toolbar button {
+    flex: 1;
     padding: 8px 12px;
     background: var(--border);
     border: none;
@@ -175,6 +158,7 @@ h1 {
     font-size: 12px;
     white-space: nowrap;
     transition: background 0.2s;
+    text-align: center;
 }
 
 .toolbar button:hover {
@@ -278,7 +262,7 @@ textarea:focus {
 .btn-purify {
     background-color: var(--primary);
     color: white;
-    flex: 1; /* Makes Purify prominent */
+    flex: 1;
 }
 
 .btn-purify:hover {
@@ -330,8 +314,23 @@ footer {
     max-width: 850px;
 }
 
+footer a {
+    text-decoration: none;
+    color: var(--text-muted);
+    transition: color 0.2s;
+}
+
+footer a:hover {
+    color: var(--primary);
+}
+
 /* --- Responsive Layout --- */
 @media (max-width: 700px) {
+    .container {
+        padding: 20px;
+        margin: 20px 10px;
+    }
+
     .action-area {
         flex-direction: column;
     }
@@ -342,5 +341,10 @@ footer {
 
     .main-btn, .btn-purify, .btn-copy, .btn-clear {
         width: 100%;
+    }
+
+    /* Stacks inputs on very small screens */
+    .find-replace-row {
+        flex-direction: column;
     }
 }

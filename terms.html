@@ -17,7 +17,6 @@
     <div class="nav-container">
         <a href="index.html" class="logo">✨ CleanTextApp</a>
         <div class="nav-links">
-            <a href="index.html">Home</a>
             <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌓 Dark Mode</button>
         </div>
     </div>
@@ -60,7 +59,9 @@
         </section>
 
         <div style="text-align: center; margin-top: 40px;">
-            <a href="index.html" class="main-btn btn-purify" style="text-decoration: none; display: inline-flex;">Back to Purifier</a>
+            <button onclick="history.back()" class="main-btn btn-purify" style="cursor: pointer; border: none; display: inline-flex;">
+            Back to Purifier
+            </button>
         </div>
     </div>
 
@@ -95,5 +96,6 @@
 </body>
 
 </html>
+
 
 

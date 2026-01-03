@@ -15,7 +15,6 @@
     <div class="nav-container">
         <a href="index.html" class="logo">✨ CleanTextApp</a>
         <div class="nav-links">
-            <a href="index.html">Home</a>
             <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌓 Dark Mode</button>
         </div>
     </div>
@@ -45,7 +44,9 @@
             <p>Your data is your business. <strong>CleanTextApp does not store your text.</strong> Everything you paste into our editor stays in your browser's local memory and is never sent to a server. When you refresh or close the page, your text is gone—ensuring your sensitive drafts remain private.</p>
         </section>
         <div style="text-align: center; margin-top: 40px;">
-            <a href="index.html" class="main-btn btn-purify" style="text-decoration: none; display: inline-flex;">Back to Purifier</a>
+            <button onclick="history.back()" class="main-btn btn-purify" style="cursor: pointer; border: none; display: inline-flex;">
+                Back to Purifier
+            </button>
         </div>        
     </div>
 
@@ -79,6 +80,7 @@
     </script>
 </body>
 </html>
+
 
 
 

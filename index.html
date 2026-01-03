@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style.css">  
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
     <link rel="canonical" href="https://cleantextapp.com/index.html" />
+    
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://cleantextapp.com/">
     <meta property="og:title" content="CleanTextApp | Instant Text Purifier">
@@ -64,10 +65,15 @@
         </div>
 
         <div class="action-area">
-            <button class="main-btn btn-purify" onclick="purifyText()">Purify Text</button>
-            <button class="main-btn btn-copy" id="copyBtn" onclick="copyText()">Copy to Clipboard</button>
+            <button class="main-btn btn-purify" onclick="purifyText()">✨ Purify Text</button>
+            
+            <div class="secondary-actions">
+                <button class="main-btn btn-copy" id="copyBtn" onclick="copyText()">📋 Copy to Clipboard</button>
+                <button class="main-btn btn-clear" onclick="clearText()">🗑️ Clear All</button>
+            </div>
+            
+            <div id="statusMessage" style="height: 24px; margin-top: 10px; font-weight: 600; color: var(--success); transition: opacity 0.3s; opacity: 0;"></div>
         </div>
-        <div id="status" class="status-msg"></div>
 
         <div class="ad-placeholder" style="height: 100px;">Middle Ad Unit</div>
 
@@ -78,19 +84,19 @@
     </div>
 
     <footer>
-    <p>&copy; 2026 CleanTextApp.com | Designed for the Next Generation of Creators.</p>
-    <div style="margin-top: 15px;">
-        <a href="index.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Home</a>
-        <a href="tips.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Usage Guide</a>
-        <a href="about.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">About</a>
-        <a href="contact.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Contact</a>
-        <a href="privacy.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Privacy</a>
-        <a href="terms.html" style="color: var(--text-muted); text-decoration: none;">Terms</a>
-    </div>
-</footer>
+        <p>&copy; 2026 CleanTextApp.com | Designed for the Next Generation of Creators.</p>
+        <div style="margin-top: 15px;">
+            <a href="index.html" style="color: var(--primary); font-weight: bold; margin-right: 15px; text-decoration: none;">Home</a>
+            <a href="tips.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Usage Guide</a>
+            <a href="about.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">About</a>
+            <a href="contact.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Contact</a>
+            <a href="privacy.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Privacy</a>
+            <a href="terms.html" style="color: var(--text-muted); text-decoration: none;">Terms</a>
+        </div>
+    </footer>
 
     <script>
-        // --- Theme Logic (Synced with tips.html) ---
+        // --- Theme Logic ---
         function toggleTheme() {
             const body = document.getElementById('bodyTag');
             body.classList.toggle('dark-theme');
@@ -153,10 +159,10 @@
 
         // --- Core Functions ---
         function purifyText() {
-            let input = document.getElementById('editor').value;
-            if(!input) return;
+            let editor = document.getElementById('editor');
+            if(!editor.value) return;
 
-            let clean = input
+            editor.value = editor.value
                 .replace(/(\*\*|__)(.*?)\1/g, "$2")
                 .replace(/(\*|_)(.*?)\1/g, "$2")
                 .replace(/^#+\s+/gm, "")
@@ -166,13 +172,13 @@
                 .replace(/\n{3,}/g, "\n\n")
                 .trim();
 
-            document.getElementById('editor').value = clean;
             updateCounts();
-            showStatus("Markdown Removed!");
+            showStatus("Text Purified! ✨");
         }
 
         function changeCase(type) {
             const editor = document.getElementById('editor');
+            if (!editor.value) return;
             if (type === 'upper') editor.value = editor.value.toUpperCase();
             if (type === 'lower') editor.value = editor.value.toLowerCase();
             showStatus(`Changed to ${type}case`);
@@ -200,37 +206,56 @@
             btn.classList.toggle('active');
             showStatus(`Spellcheck ${!isTrue ? 'On' : 'Off'}`);
             
+            // Forces the browser to refresh spellcheck underlines
             const v = editor.value; editor.value = ''; editor.value = v;
         }
 
-        function copyText() {
-    const text = document.getElementById('outputText').value;
-    if (!text) return;
+        async function copyText() {
+            const editor = document.getElementById('editor');
+            const copyBtn = document.getElementById('copyBtn');
+            if (!editor.value) {
+                showStatus("Nothing to copy!");
+                return;
+            }
 
-    navigator.clipboard.writeText(text).then(() => {
-        const copyBtn = document.getElementById('copyBtn');
-        const originalText = copyBtn.innerHTML;
-        const originalBg = copyBtn.style.backgroundColor;
+            try {
+                await navigator.clipboard.writeText(editor.value);
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = "✅ Copied!";
+                showStatus("Copied to clipboard!");
+                setTimeout(() => { copyBtn.innerHTML = originalText; }, 2000);
+            } catch (err) {
+                editor.select();
+                document.execCommand('copy');
+                showStatus("Copied!");
+            }
+        }
 
-        // Change to success state
-        copyBtn.innerHTML = "✅ Copied!";
-        copyBtn.style.backgroundColor = "var(--success)";
-        
-        setTimeout(() => {
-            copyBtn.innerHTML = originalText;
-            copyBtn.style.backgroundColor = originalBg;
-        }, 2000);
-    });
-}
+        function clearText() {
+            const editor = document.getElementById('editor');
+            if (editor.value === "") return;
 
+            if (editor.value.length > 100) {
+                if (!confirm("Clear all text from the editor?")) return;
+            }
+
+            editor.value = "";
+            updateCounts();
+            showStatus("Workspace Cleared ✨");
+        }
+
+        // --- Unified Status Helper ---
         function showStatus(msg) {
-            const statusDiv = document.getElementById('status');
-            statusDiv.innerText = msg;
-            setTimeout(() => { statusDiv.innerText = ""; }, 3000);
+            const status = document.getElementById('statusMessage');
+            if (!status) return;
+            status.innerText = msg;
+            status.style.opacity = "1";
+            setTimeout(() => { status.style.opacity = "0"; }, 2000);
         }
     </script>
 </body>
 </html>
+
 
 
 

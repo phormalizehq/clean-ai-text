@@ -204,11 +204,24 @@
         }
 
         function copyText() {
-            const textArea = document.getElementById('editor');
-            textArea.select();
-            document.execCommand('copy');
-            showStatus("Copied to Clipboard!");
-        }
+    const text = document.getElementById('outputText').value;
+    if (!text) return;
+
+    navigator.clipboard.writeText(text).then(() => {
+        const copyBtn = document.getElementById('copyBtn');
+        const originalText = copyBtn.innerHTML;
+        const originalBg = copyBtn.style.backgroundColor;
+
+        // Change to success state
+        copyBtn.innerHTML = "✅ Copied!";
+        copyBtn.style.backgroundColor = "var(--success)";
+        
+        setTimeout(() => {
+            copyBtn.innerHTML = originalText;
+            copyBtn.style.backgroundColor = originalBg;
+        }, 2000);
+    });
+}
 
         function showStatus(msg) {
             const statusDiv = document.getElementById('status');
@@ -218,6 +231,7 @@
     </script>
 </body>
 </html>
+
 
 
 

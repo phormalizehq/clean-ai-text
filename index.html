@@ -11,7 +11,7 @@
 
     <nav id="top">
         <div class="nav-container">
-            <a href="#top" class="logo" style="text-decoration: none;">✨ CleanTextApp</a>
+            <a href="javascript:void(0)" onclick="confirmRefresh()" class="logo" style="text-decoration: none;">✨ CleanTextApp</a>
             <div class="nav-links">
                 <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌓 Dark Mode</button>
             </div>
@@ -168,6 +168,18 @@
             btn.classList.toggle('active');
             const v = editor.value; editor.value = ''; editor.value = v;
         }
+
+        function confirmRefresh() {
+            const userChoice = confirm("Do you want to clear your current session and refresh the page?");            
+            if (userChoice) {
+                // Yes: Refresh the page
+                window.location.reload();
+            } else {
+                // No: Just scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
     </script>
 </body>
 </html>
+

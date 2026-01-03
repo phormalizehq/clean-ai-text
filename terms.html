@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service | CleanTextApp</title>
+    <meta name="description" content="Terms of Service for CleanTextApp. Understanding your rights and our service commitment.">
+    <link rel="canonical" href="https://cleantextapp.com/terms.html" />
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+</head>
+<body id="bodyTag">
+
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">✨ CleanTextApp</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="tips.html">Usage Guide</a>
+                <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌓 Dark Mode</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>Terms of Service</h1>
+            <p class="last-updated">Last Updated: January 2026</p>
+        </header>
+
+        <section>
+            <h2>1. Acceptance of Terms</h2>
+            <p>By accessing and using <strong>CleanTextApp</strong> (cleantextapp.com), you accept and agree to be bound by the terms and provision of this agreement.</p>
+        </section>
+
+        <section>
+            <h2>2. Description of Service</h2>
+            <p>CleanTextApp provides a web-based text purification and formatting tool. The service is provided "as-is" and "as available." We do not store your text; all processing happens locally in your browser.</p>
+        </section>
+
+        <section>
+            <h2>3. Use of License</h2>
+            <p>Permission is granted to use this tool for personal or commercial purposes. You may not attempt to decompile or reverse engineer any software contained on CleanTextApp, or use the tool for any illegal activities.</p>
+        </section>
+
+        <section>
+            <h2>4. Disclaimer</h2>
+            <p>CleanTextApp makes no warranties, expressed or implied, and hereby disclaims all other warranties including, without limitation, implied warranties of merchantability or fitness for a particular purpose. We are not responsible for any data loss occurring through the use of this tool.</p>
+        </section>
+
+        <section>
+            <h2>5. Limitations</h2>
+            <p>In no event shall CleanTextApp or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit) arising out of the use or inability to use the materials on CleanTextApp.</p>
+        </section>
+
+        <section>
+            <h2>6. Contact</h2>
+            <p>If you have any questions regarding these terms, please contact us at <strong>support@cleantextapp.com</strong>.</p>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 CleanTextApp.com | Designed for the Next Generation of Creators.</p>
+        <div style="margin-top: 15px;">
+            <a href="index.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Home</a>
+            <a href="tips.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Usage Guide</a>
+            <a href="about.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">About</a>
+            <a href="privacy.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Privacy</a>
+            <a href="terms.html" style="color: var(--primary); text-decoration: none; font-weight: bold;">Terms</a>
+        </div>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            const body = document.getElementById('bodyTag');
+            body.classList.toggle('dark-theme');
+            const isDark = body.classList.contains('dark-theme');
+            localStorage.setItem('preferred-theme', isDark ? 'dark' : 'light');
+            document.getElementById('themeBtn').innerHTML = isDark ? '☀️ Light' : '🌓 Dark';
+        }
+
+        window.onload = () => {
+            if (localStorage.getItem('preferred-theme') === 'dark') {
+                document.getElementById('bodyTag').classList.add('dark-theme');
+                document.getElementById('themeBtn').innerHTML = '☀️ Light';
+            }
+        };
+    </script>
+</body>
+</html>

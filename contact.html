@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | CleanTextApp</title>
+    <meta name="description" content="Get in touch with the CleanTextApp team. We are here to help with your text processing questions.">
+    <link rel="canonical" href="https://cleantextapp.com/contact.html" />
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+</head>
+<body id="bodyTag">
+
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">✨ CleanTextApp</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="tips.html">Usage Guide</a>
+                <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌓 Dark Mode</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" style="text-align: center;">
+        <header>
+            <h1>Contact Us</h1>
+            <p>Have a question, feedback, or a feature request? We'd love to hear from you.</p>
+        </header>
+
+        <section>
+            <div style="background: var(--counter-bg); padding: 40px; border-radius: 12px; border: 1px solid var(--border);">
+                <h2 style="border: none;">Email Support</h2>
+                <p>For all inquiries, please reach out to us at:</p>
+                <a href="mailto:support@cleantextapp.com" style="font-size: 1.5rem; color: var(--primary); font-weight: bold; text-decoration: none;">support@cleantextapp.com</a>
+                <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-muted);">We typically respond within 24-48 hours.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Privacy Note</h2>
+            <p>We only use your email address to respond to your inquiry. We do not use your contact information for marketing purposes or share it with third parties.</p>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 CleanTextApp.com | Designed for the Next Generation of Creators.</p>
+        <div style="margin-top: 15px;">
+            <a href="index.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Home</a>
+            <a href="tips.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Usage Guide</a>
+            <a href="about.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">About</a>
+            <a href="contact.html" style="color: var(--primary); margin-right: 15px; text-decoration: none; font-weight: bold;">Contact</a>
+            <a href="privacy.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Privacy</a>
+            <a href="terms.html" style="color: var(--text-muted); text-decoration: none;">Terms</a>
+        </div>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            const body = document.getElementById('bodyTag');
+            body.classList.toggle('dark-theme');
+            const isDark = body.classList.contains('dark-theme');
+            localStorage.setItem('preferred-theme', isDark ? 'dark' : 'light');
+            document.getElementById('themeBtn').innerHTML = isDark ? '☀️ Light' : '🌓 Dark';
+        }
+
+        window.onload = () => {
+            if (localStorage.getItem('preferred-theme') === 'dark') {
+                document.getElementById('bodyTag').classList.add('dark-theme');
+                document.getElementById('themeBtn').innerHTML = '☀️ Light';
+            }
+        };
+    </script>
+</body>
+</html>

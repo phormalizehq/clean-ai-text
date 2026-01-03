@@ -6,6 +6,26 @@
     <title>AI Text Purifier | Clean ChatGPT & Claude Formatting</title>
     <link rel="stylesheet" href="style.css">  
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+    <style>
+        /* Adding a small style for the word frequency chips */
+        .frequency-container {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(0,0,0,0.03);
+            border-radius: 8px;
+            font-size: 0.85em;
+        }
+        .dark-theme .frequency-container { background: rgba(255,255,255,0.05); }
+        .freq-tag {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin: 3px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body id="bodyTag">
 
@@ -27,14 +47,18 @@
         <div class="editor-wrapper">
             <div class="toolbar">
                 <div class="find-replace-row">
-                    <input type="text" id="findInput" placeholder="Find..." onkeydown="handleEnter(event)">
+                    <input type="text" id="findInput" placeholder="Find..." oninput="resetSearch()" onkeydown="handleEnter(event)">
                     <input type="text" id="replaceInput" placeholder="Replace..." onkeydown="handleEnter(event)">
-                    <button onclick="replaceText()" style="background: var(--primary); color: white;">Replace All</button>
+                    <div class="toolbar-group">
+                        <button onclick="highlightText()" style="background: var(--primary); color: white;">Find</button>
+                        <button onclick="replaceText()" style="background: var(--primary); color: white;">Replace All</button>
+                        <button onclick="clearFindReplace()" title="Clear find/replace boxes" style="background: #ff4d4d; color: white; min-width: 30px;">✕</button>
+                    </div>
                 </div>
                 <div class="toolbar-group">
                     <button onclick="changeCase('upper')">UPPERCASE</button>
                     <button onclick="changeCase('lower')">lowercase</button>
-                    <button onclick="toggleSpellcheck()" id="spellBtn" class="active">ABC✓</button>
+                    <button onclick="changeCase('title')">Title Case</button>
                 </div>
             </div>
 
@@ -49,6 +73,11 @@
                     Readability: <b id="readabilityScore">N/A</b> 
                     <span id="readabilityLevel" class="readability-tag">Ready</span>
                 </div>
+            </div>
+
+            <div id="frequencyArea" class="frequency-container" style="display:none;">
+                <strong>Top Frequent Words:</strong>
+                <div id="wordFreqList" style="margin-top: 5px;"></div>
             </div>
         </div>
 
@@ -76,13 +105,12 @@
     </footer>
 
     <script>
-    // --- UPDATED PURIFY LOGIC ---
+    // --- PURIFY LOGIC ---
     function purifyText() {
         let editor = document.getElementById('editor');
         let text = editor.value;
         if(!text) return;
 
-        // 1. Remove Markdown Formatting
         text = text.replace(/(\*\*|__)(.*?)\1/g, "$2")
                    .replace(/(\*|_)(.*?)\1/g, "$2")
                    .replace(/^#+\s+/gm, "")
@@ -90,13 +118,7 @@
                    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
                    .replace(/^[*-]\s+/gm, "• ");
 
-        // 2. Clean up weird mid-word symbols (protects NASA)
-        // Only removes symbols if they are NOT letters or numbers
         text = text.replace(/([a-zA-Z0-9])([^a-zA-Z0-9\-\/\s\.!?])([a-zA-Z0-9])/g, "$1$3");
-
-        // 3. Sentence Case: ONLY capitalize the start of sentences
-        // This regex looks for the start of the text or a punctuation mark followed by a space
-        // and then a lowercase letter, turning only that letter into Uppercase.
         text = text.replace(/(^\s*|[.!?]\s+)([a-z])/g, (m) => m.toUpperCase());
 
         editor.value = text.trim();
@@ -111,15 +133,101 @@
 
         if (type === 'upper') {
             editor.value = editor.value.toUpperCase();
-            showStatus("Converted to UPPERCASE");
         } else if (type === 'lower') {
             editor.value = editor.value.toLowerCase();
-            showStatus("converted to lowercase");
-        }    
+        } else if (type === 'title') {
+            editor.value = editor.value.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+        }
         updateCounts();
+        showStatus("Case Updated");
     }
 
-    // --- HELPER FUNCTIONS ---
+    // --- WORD FREQUENCY LOGIC ---
+    function updateFrequency(text) {
+        const freqArea = document.getElementById('frequencyArea');
+        const freqList = document.getElementById('wordFreqList');
+        
+        if (!text || text.length < 10) {
+            freqArea.style.display = 'none';
+            return;
+        }
+
+        const stopWords = new Set(['the', 'and', 'a', 'to', 'of', 'in', 'is', 'it', 'that', 'on', 'for', 'was', 'as', 'with', 'be', 'this']);
+        const words = text.toLowerCase().match(/\b\w+\b/g);
+        const counts = {};
+
+        if (words) {
+            words.forEach(w => {
+                if (w.length > 1 && !stopWords.has(w)) {
+                    counts[w] = (counts[w] || 0) + 1;
+                }
+            });
+        }
+
+        const sorted = Object.entries(counts)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 8); // Top 8 words
+
+        if (sorted.length > 0) {
+            freqArea.style.display = 'block';
+            freqList.innerHTML = sorted.map(([word, count]) => 
+                `<span class="freq-tag">${word}: ${count}</span>`
+            ).join('');
+        } else {
+            freqArea.style.display = 'none';
+        }
+    }
+
+    // --- FIND & HIGHLIGHT ---
+    let searchIndex = 0;
+    function highlightText() {
+        const editor = document.getElementById('editor');
+        const findVal = document.getElementById('findInput').value;
+        if (!findVal) return;
+
+        const text = editor.value;
+        const index = text.toLowerCase().indexOf(findVal.toLowerCase(), searchIndex);
+
+        if (index !== -1) {
+            editor.focus();
+            editor.setSelectionRange(index, index + findVal.length);
+            searchIndex = index + findVal.length;
+            showStatus(`Found "${findVal}"`);
+        } else {
+            searchIndex = 0;
+            showStatus("End of text reached");
+        }
+    }
+
+    function resetSearch() { searchIndex = 0; }
+
+    function clearFindReplace() {
+        document.getElementById('findInput').value = "";
+        document.getElementById('replaceInput').value = "";
+        resetSearch();
+    }
+
+    // --- UTILITIES ---
+    function updateCounts() {
+        const text = document.getElementById('editor').value.trim();
+        const words = text ? text.split(/\s+/).length : 0;
+        const chars = text.length;
+        document.getElementById('wordCount').innerText = words;
+        document.getElementById('charCount').innerText = chars;
+        updateFrequency(text);
+    }
+
+    function replaceText() {
+        const findVal = document.getElementById('findInput').value;
+        const replaceVal = document.getElementById('replaceInput').value;
+        const editor = document.getElementById('editor');
+        if (!findVal) return;
+        const escapedFind = findVal.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        editor.value = editor.value.replace(new RegExp(escapedFind, 'g'), replaceVal);
+        updateCounts();
+        showStatus("Replaced All Instances");
+    }
+
     function toggleTheme() {
         const body = document.getElementById('bodyTag');
         body.classList.toggle('dark-theme');
@@ -135,26 +243,6 @@
         }
     };
 
-    function updateCounts() {
-        const text = document.getElementById('editor').value.trim();
-        const words = text ? text.split(/\s+/).length : 0;
-        const chars = text.length;
-        document.getElementById('wordCount').innerText = words;
-        document.getElementById('charCount').innerText = chars;
-    }
-
-    function replaceText() {
-        const findVal = document.getElementById('findInput').value;
-        const replaceVal = document.getElementById('replaceInput').value;
-        const editor = document.getElementById('editor');
-        if (!findVal || !editor.value) return;
-        // Use a global regex to replace all instances
-        const escapedFind = findVal.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        editor.value = editor.value.replace(new RegExp(escapedFind, 'g'), replaceVal);
-        updateCounts();
-        showStatus("Text Replaced");
-    }
-
     function handleEnter(e) { if (e.key === "Enter") replaceText(); }
 
     async function copyText() {
@@ -162,7 +250,7 @@
         try {
             await navigator.clipboard.writeText(editor.value);
             showStatus("Copied to clipboard!");
-        } catch (err) { showStatus("Failed to copy"); }
+        } catch (err) { showStatus("Copy failed"); }
     }
 
     function clearText() {
@@ -178,17 +266,8 @@
         setTimeout(() => { status.style.opacity = "0"; }, 2000);
     }
 
-    function toggleSpellcheck() {
-        const editor = document.getElementById('editor');
-        const btn = document.getElementById('spellBtn');
-        const isTrue = editor.getAttribute('spellcheck') === 'true';
-        editor.setAttribute('spellcheck', !isTrue);
-        btn.classList.toggle('active');
-        const v = editor.value; editor.value = ''; editor.value = v;
-    }
-
     function confirmRefresh() {
-        if (confirm("Do you want to clear your current session and refresh the page?")) {
+        if (confirm("Refresh page and clear all text?")) {
             window.location.reload();
         } else {
             window.scrollTo({ top: 0, behavior: 'smooth' });

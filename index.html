@@ -4,25 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Text Purifier | Clean ChatGPT & Claude Formatting</title>
-    <meta name="description" content="Free tool to remove markdown, fix formatting, and clean up text from AI generators like ChatGPT, Claude, and Gemini.">
     <link rel="stylesheet" href="style.css">  
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
-    <link rel="canonical" href="https://cleantextapp.com/index.html" />
-    
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://cleantextapp.com/">
-    <meta property="og:title" content="CleanTextApp | Instant Text Purifier">
-    <meta property="og:description" content="The ultimate tool to clean, format, and strip unwanted characters from your text instantly. 100% private, browser-based processing.">
-    <meta property="og:image" content="https://cleantextapp.com/og-image.jpg">
 </head>
 <body id="bodyTag">
 
-    <nav>
+    <nav id="top">
         <div class="nav-container">
-            <a href="index.html" class="logo">✨ CleanTextApp</a>
+            <a href="#top" class="logo" style="text-decoration: none;">✨ CleanTextApp</a>
             <div class="nav-links">
-                <a href="index.html" style="color: var(--primary);">Home</a>
-                <a href="tips.html">Usage Guide</a>
                 <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌓 Dark Mode</button>
             </div>
         </div>
@@ -34,14 +24,12 @@
             <p class="description">Format AI content, fix grammar, and check readability instantly.</p>
         </header>
 
-        <div class="ad-placeholder">Top Ad Unit</div>
-
         <div class="editor-wrapper">
             <div class="toolbar">
-                <div style="display:flex; width: 100%; gap: 8px; margin-bottom: 8px;">
-                    <input type="text" id="findInput" placeholder="Find text..." onkeydown="handleEnter(event)">
-                    <input type="text" id="replaceInput" placeholder="Replace with..." onkeydown="handleEnter(event)">
-                    <button onclick="replaceText()">Replace All</button>
+                <div class="find-replace-row">
+                    <input type="text" id="findInput" placeholder="Find..." onkeydown="handleEnter(event)">
+                    <input type="text" id="replaceInput" placeholder="Replace..." onkeydown="handleEnter(event)">
+                    <button onclick="replaceText()" style="background: var(--primary); color: white;">Replace All</button>
                 </div>
                 <div class="toolbar-group">
                     <button onclick="changeCase('upper')">UPPERCASE</button>
@@ -66,7 +54,6 @@
 
         <div class="action-area">
             <button class="main-btn btn-purify" onclick="purifyText()">✨ Purify Text</button>
-            
             <div class="secondary-actions">
                 <button class="main-btn btn-copy" id="copyBtn" onclick="copyText()">📋 Copy</button>
                 <button class="main-btn btn-clear" onclick="clearText()">🗑️ Clear</button>
@@ -74,20 +61,13 @@
         </div>
 
         <div id="statusMessage" style="height: 24px; margin-top: 15px; text-align: center; font-weight: 600; color: var(--success); transition: opacity 0.3s; opacity: 0;"></div>
-
-        <div class="ad-placeholder" style="height: 100px;">Middle Ad Unit</div>
-
-        <div style="margin-top: 30px;">
-            <h2 style="font-size: 1.4rem;">Professional AI Content Formatting</h2>
-            <p style="color: var(--text-muted); line-height: 1.6;">CleanTextApp helps you polish AI-generated text for professional use. Remove markdown clutter, adjust text casing, and monitor readability to ensure your content is accessible and engaging.</p>
-        </div>
     </div>
 
     <footer>
-        <p>&copy; 2026 CleanTextApp.com | Designed for Creators.</p>
+        <p>&copy; 2026 CleanTextApp.com</p>
         <div style="margin-top: 15px;">
-            <a href="index.html" style="color: var(--primary); font-weight: bold; margin-right: 15px; text-decoration: none;">Home</a>
-            <a href="tips.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Usage Guide</a>
+            <a href="#top" style="color: var(--primary); font-weight: bold; margin-right: 15px; text-decoration: none;">Home</a>
+            <a href="tips.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">How-To</a>
             <a href="about.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">About</a>
             <a href="contact.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Contact</a>
             <a href="privacy.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Privacy</a>
@@ -96,7 +76,34 @@
     </footer>
 
     <script>
-        // --- Theme Logic ---
+        // --- NEW PURIFY LOGIC ---
+        function purifyText() {
+            let editor = document.getElementById('editor');
+            let text = editor.value;
+            if(!text) return;
+
+            // 1. Remove Markdown Formatting first
+            text = text.replace(/(\*\*|__)(.*?)\1/g, "$2")
+                       .replace(/(\*|_)(.*?)\1/g, "$2")
+                       .replace(/^#+\s+/gm, "")
+                       .replace(/`{1,3}.*?`{1,3}/gs, "")
+                       .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
+                       .replace(/^[*-]\s+/gm, "• ");
+
+            // 2. Remove special characters INSIDE words except '-' and '/'
+            // This logic looks for special chars that are surrounded by letters
+            text = text.replace(/([a-zA-Z0-9])([^a-zA-Z0-9\-\/\s])([a-zA-Z0-9])/g, "$1$3");
+
+            // 3. Sentence Case: Capitalize first word of sentences
+            // Handles starts of strings and words after . ! ?
+            text = text.toLowerCase().replace(/(^\s*|[.!?]\s+)([a-z])/g, (m) => m.toUpperCase());
+
+            editor.value = text.trim();
+            updateCounts();
+            showStatus("Text Purified! ✨");
+        }
+
+        // --- Keep previous helper functions (toggleTheme, updateCounts, etc.) ---
         function toggleTheme() {
             const body = document.getElementById('bodyTag');
             body.classList.toggle('dark-theme');
@@ -112,76 +119,12 @@
             }
         };
 
-        // --- Stats & Readability ---
         function updateCounts() {
             const text = document.getElementById('editor').value.trim();
             const words = text ? text.split(/\s+/).length : 0;
             const chars = text.length;
-            
             document.getElementById('wordCount').innerText = words;
             document.getElementById('charCount').innerText = chars;
-
-            calculateReadability(text, words);
-        }
-
-        function calculateReadability(text, wordCount) {
-            const scoreLabel = document.getElementById('readabilityScore');
-            const levelLabel = document.getElementById('readabilityLevel');
-            
-            if (wordCount < 5) {
-                scoreLabel.innerText = "N/A";
-                levelLabel.innerText = "Ready";
-                levelLabel.style.background = "var(--border)";
-                return;
-            }
-
-            const sentences = text.split(/[.!?]+/).filter(x => x.length > 0).length || 1;
-            const avgWordLength = text.replace(/\s/g, '').length / wordCount;
-            const wordsPerSentence = wordCount / sentences;
-
-            const score = Math.round((wordsPerSentence * 0.5) + (avgWordLength * 5));
-            scoreLabel.innerText = score;
-
-            if (score < 30) {
-                levelLabel.innerText = "Simple";
-                levelLabel.style.background = "#10b981";
-                levelLabel.style.color = "white";
-            } else if (score < 50) {
-                levelLabel.innerText = "Average";
-                levelLabel.style.background = "#f59e0b";
-                levelLabel.style.color = "white";
-            } else {
-                levelLabel.innerText = "Complex";
-                levelLabel.style.background = "#ef4444";
-                levelLabel.style.color = "white";
-            }
-        }
-
-        // --- Core Functions ---
-        function purifyText() {
-            let editor = document.getElementById('editor');
-            if(!editor.value) return;
-
-            editor.value = editor.value
-                .replace(/(\*\*|__)(.*?)\1/g, "$2")
-                .replace(/(\*|_)(.*?)\1/g, "$2")
-                .replace(/^#+\s+/gm, "")
-                .replace(/`{1,3}.*?`{1,3}/gs, "")
-                .replace(/^[*-]\s+/gm, "• ")
-                .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
-                .replace(/\n{3,}/g, "\n\n")
-                .trim();
-
-            updateCounts();
-            showStatus("Text Purified! ✨");
-        }
-
-        function changeCase(type) {
-            const editor = document.getElementById('editor');
-            if (!editor.value) return;
-            if (type === 'upper') editor.value = editor.value.toUpperCase();
-            if (type === 'lower') editor.value = editor.value.toLowerCase();
-            showStatus(`Changed to ${type}case`);
         }
 
         function replaceText() {
@@ -189,7 +132,6 @@
             const replaceVal = document.getElementById('replaceInput').value;
             const editor = document.getElementById('editor');
             if (!findVal || !editor.value) return;
-
             editor.value = editor.value.split(findVal).join(replaceVal);
             updateCounts();
             showStatus("Text Replaced");
@@ -197,58 +139,34 @@
 
         function handleEnter(e) { if (e.key === "Enter") replaceText(); }
 
-        function toggleSpellcheck() {
-            const editor = document.getElementById('editor');
-            const btn = document.getElementById('spellBtn');
-            const isTrue = editor.getAttribute('spellcheck') === 'true';
-            
-            editor.setAttribute('spellcheck', !isTrue);
-            btn.classList.toggle('active');
-            showStatus(`Spellcheck ${!isTrue ? 'On' : 'Off'}`);
-            
-            const v = editor.value; editor.value = ''; editor.value = v;
-        }
-
         async function copyText() {
             const editor = document.getElementById('editor');
-            const copyBtn = document.getElementById('copyBtn');
-            if (!editor.value) {
-                showStatus("Nothing to copy!");
-                return;
-            }
-
             try {
                 await navigator.clipboard.writeText(editor.value);
-                const originalText = copyBtn.innerHTML;
-                copyBtn.innerHTML = "✅ Copied!";
                 showStatus("Copied to clipboard!");
-                setTimeout(() => { copyBtn.innerHTML = originalText; }, 2000);
-            } catch (err) {
-                editor.select();
-                document.execCommand('copy');
-                showStatus("Copied!");
-            }
+            } catch (err) { showStatus("Failed to copy"); }
         }
 
         function clearText() {
-            const editor = document.getElementById('editor');
-            if (editor.value === "") return;
-
-            if (editor.value.length > 100) {
-                if (!confirm("Clear all text from the editor?")) return;
-            }
-
-            editor.value = "";
+            document.getElementById('editor').value = "";
             updateCounts();
             showStatus("Workspace Cleared ✨");
         }
 
         function showStatus(msg) {
             const status = document.getElementById('statusMessage');
-            if (!status) return;
             status.innerText = msg;
             status.style.opacity = "1";
             setTimeout(() => { status.style.opacity = "0"; }, 2000);
+        }
+
+        function toggleSpellcheck() {
+            const editor = document.getElementById('editor');
+            const btn = document.getElementById('spellBtn');
+            const isTrue = editor.getAttribute('spellcheck') === 'true';
+            editor.setAttribute('spellcheck', !isTrue);
+            btn.classList.toggle('active');
+            const v = editor.value; editor.value = ''; editor.value = v;
         }
     </script>
 </body>

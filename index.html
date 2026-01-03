@@ -26,7 +26,7 @@
             font-weight: bold;
         }
 
-        /* Improved Toolbar Layout for Find/Replace */
+        /* Toolbar Layout for Find/Replace */
         .find-replace-row {
             display: flex;
             gap: 8px;
@@ -37,7 +37,7 @@
         }
 
         .find-replace-row input {
-            flex: 2; /* Makes input boxes much wider */
+            flex: 2; 
             min-width: 120px;
             padding: 8px;
             border: 1px solid #ccc;
@@ -46,15 +46,15 @@
         }
 
         .find-replace-row .toolbar-group {
-            flex: 1; /* Keeps buttons in a tighter group */
+            flex: 1; 
             display: flex;
             gap: 4px;
             min-width: fit-content;
         }
 
         .find-replace-row button {
-            padding: 6px 10px; /* Smaller button padding */
-            font-size: 12px;   /* Smaller button text */
+            padding: 6px 10px; 
+            font-size: 12px;   
             white-space: nowrap;
         }
 
@@ -67,6 +67,11 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
+        }
+
+        .btn-download {
+            background: #28a745 !important;
+            color: white !important;
         }
     </style>
 </head>
@@ -111,7 +116,8 @@
             <div class="counter-bar">
                 <div class="stats-left">
                     <span>Words: <b id="wordCount">0</b></span>
-                    <span>Characters: <b id="charCount">0</b></span>
+                    <span>Chars: <b id="charCount">0</b></span>
+                    <span>Reading Time: <b id="readingTime">0m</b></span>
                 </div>
                 <div>
                     Readability: <b id="readabilityScore">N/A</b> 
@@ -129,6 +135,7 @@
             <button class="main-btn btn-purify" onclick="purifyText()">✨ Purify Text</button>
             <div class="secondary-actions">
                 <button class="main-btn btn-copy" id="copyBtn" onclick="copyText()">📋 Copy</button>
+                <button class="main-btn btn-download" onclick="downloadText()">💾 Download .txt</button>
                 <button class="main-btn btn-clear" onclick="clearText()">🗑️ Clear</button>
             </div>
         </div>
@@ -174,14 +181,9 @@
     function changeCase(type) {
         const editor = document.getElementById('editor');
         if (!editor || !editor.value) return; 
-
-        if (type === 'upper') {
-            editor.value = editor.value.toUpperCase();
-        } else if (type === 'lower') {
-            editor.value = editor.value.toLowerCase();
-        } else if (type === 'title') {
-            editor.value = editor.value.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
-        }
+        if (type === 'upper') editor.value = editor.value.toUpperCase();
+        else if (type === 'lower') editor.value = editor.value.toLowerCase();
+        else if (type === 'title') editor.value = editor.value.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
         updateCounts();
         showStatus("Case Updated");
     }
@@ -190,11 +192,7 @@
     function updateFrequency(text) {
         const freqArea = document.getElementById('frequencyArea');
         const freqList = document.getElementById('wordFreqList');
-        
-        if (!text || text.length < 10) {
-            freqArea.style.display = 'none';
-            return;
-        }
+        if (!text || text.length < 10) { freqArea.style.display = 'none'; return; }
 
         const stopWords = new Set(['the', 'and', 'a', 'to', 'of', 'in', 'is', 'it', 'that', 'on', 'for', 'was', 'as', 'with', 'be', 'this']);
         const words = text.toLowerCase().match(/\b\w+\b/g);
@@ -202,24 +200,30 @@
 
         if (words) {
             words.forEach(w => {
-                if (w.length > 1 && !stopWords.has(w)) {
-                    counts[w] = (counts[w] || 0) + 1;
-                }
+                if (w.length > 1 && !stopWords.has(w)) counts[w] = (counts[w] || 0) + 1;
             });
         }
 
-        const sorted = Object.entries(counts)
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, 8); 
-
+        const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 8); 
         if (sorted.length > 0) {
             freqArea.style.display = 'block';
-            freqList.innerHTML = sorted.map(([word, count]) => 
-                `<span class="freq-tag">${word}: ${count}</span>`
-            ).join('');
-        } else {
-            freqArea.style.display = 'none';
-        }
+            freqList.innerHTML = sorted.map(([word, count]) => `<span class="freq-tag">${word}: ${count}</span>`).join('');
+        } else freqArea.style.display = 'none';
+    }
+
+    // --- DOWNLOAD LOGIC ---
+    function downloadText() {
+        const text = document.getElementById('editor').value;
+        if (!text) { showStatus("Nothing to download!"); return; }
+        
+        const blob = new Blob([text], { type: 'text/plain' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `PurifiedText-${new Date().getTime()}.txt`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+        showStatus("File Downloaded! 💾");
     }
 
     // --- FIND & HIGHLIGHT ---
@@ -228,37 +232,35 @@
         const editor = document.getElementById('editor');
         const findVal = document.getElementById('findInput').value;
         if (!findVal) return;
-
-        const text = editor.value;
-        const index = text.toLowerCase().indexOf(findVal.toLowerCase(), searchIndex);
-
+        const index = editor.value.toLowerCase().indexOf(findVal.toLowerCase(), searchIndex);
         if (index !== -1) {
             editor.focus();
             editor.setSelectionRange(index, index + findVal.length);
             searchIndex = index + findVal.length;
             showStatus(`Found "${findVal}"`);
-        } else {
-            searchIndex = 0;
-            showStatus("End of text reached");
-        }
+        } else { searchIndex = 0; showStatus("End of text reached"); }
     }
 
     function resetSearch() { searchIndex = 0; }
-
     function clearFindReplace() {
         document.getElementById('findInput').value = "";
         document.getElementById('replaceInput').value = "";
         resetSearch();
-        showStatus("Inputs Cleared");
     }
 
-    // --- UTILITIES ---
+    // --- COUNTS & READING TIME ---
     function updateCounts() {
         const text = document.getElementById('editor').value.trim();
         const words = text ? text.split(/\s+/).length : 0;
         const chars = text.length;
+        
+        // Estimating Reading Time (Avg 200 words per minute)
+        const time = Math.ceil(words / 200);
+        
         document.getElementById('wordCount').innerText = words;
         document.getElementById('charCount').innerText = chars;
+        document.getElementById('readingTime').innerText = words > 0 ? time + "m" : "0m";
+        
         updateFrequency(text);
     }
 
@@ -291,9 +293,8 @@
     function handleEnter(e) { if (e.key === "Enter") replaceText(); }
 
     async function copyText() {
-        const editor = document.getElementById('editor');
         try {
-            await navigator.clipboard.writeText(editor.value);
+            await navigator.clipboard.writeText(document.getElementById('editor').value);
             showStatus("Copied to clipboard!");
         } catch (err) { showStatus("Copy failed"); }
     }
@@ -312,11 +313,8 @@
     }
 
     function confirmRefresh() {
-        if (confirm("Refresh page and clear all text?")) {
-            window.location.reload();
-        } else {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        if (confirm("Refresh page and clear all text?")) window.location.reload();
+        else window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     </script>
 </body>

@@ -18,7 +18,7 @@
         .dark-theme .frequency-container { background: rgba(255,255,255,0.05); }
         .freq-tag {
             display: inline-block;
-            background: var(--primary);
+            background: #64748b;
             color: white;
             padding: 2px 8px;
             border-radius: 4px;
@@ -36,9 +36,10 @@
             flex-wrap: wrap;
         }
 
+        /* Reduced size of input boxes */
         .find-replace-row input {
-            flex: 2; 
-            min-width: 120px;
+            flex: 1.2; 
+            min-width: 100px;
             padding: 8px;
             border: 1px solid var(--border);
             border-radius: 4px;
@@ -48,60 +49,85 @@
         }
 
         .find-replace-row .toolbar-group {
-            flex: 1; 
+            flex: 2; 
             display: flex;
             gap: 4px;
             min-width: fit-content;
-            flex-wrap: wrap;
         }
 
+        /* Find, Replace, Replace All same size */
         .find-replace-row button {
-            padding: 6px 12px; 
+            flex: 1;
+            padding: 8px 10px; 
             font-size: 12px;   
             white-space: nowrap;
-            flex: 1;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-weight: 600;
+            background-color: #64748b !important; /* Slate */
+            color: white !important;
         }
 
+        /* Clear button smaller */
         .btn-small-clear {
-            background: #ff4d4d !important;
-            color: white !important;
-            max-width: 35px;
-            padding: 0 !important;
+            flex: 0 0 35px !important;
+            background-color: #f1f5f9 !important;
+            color: #ef4444 !important;
+            border: 1px solid #fee2e2 !important;
+            font-size: 14px !important;
+        }
+
+        /* Action Area Button Sizing */
+        .action-area {
             display: flex;
-            align-items: center;
-            justify-content: center;
+            gap: 10px;
+            align-items: stretch;
+            margin-top: 20px;
+        }
+
+        .btn-purify {
+            flex: 1.5; /* Larger than others */
+            background-color: #4f46e5 !important; /* Deep Indigo */
+            color: white !important;
             font-weight: bold;
         }
 
-        /* Fix for secondary actions on mobile */
         .secondary-actions {
+            flex: 2.5;
             display: flex;
             gap: 8px;
-            flex-wrap: wrap;
-            width: 100%;
-        }
-        
-        .secondary-actions button {
-            flex: 1;
-            min-width: 100px; /* Prevents text squishing */
         }
 
-        .btn-download {
-            background: #28a745 !important;
-            color: white !important;
+        /* Copy, Download, Clear same size */
+        .secondary-actions button {
+            flex: 1;
+            padding: 12px 5px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .btn-copy { background-color: #64748b !important; color: white !important; }
+        .btn-download { background-color: #16a34a !important; color: white !important; }
+        .btn-clear { 
+            background-color: #f1f5f9 !important; 
+            color: #ef4444 !important; 
+            border: 1px solid #fee2e2 !important; 
+        }
+
+        /* Hover effects */
+        button:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        .dark-theme .btn-clear, .dark-theme .btn-small-clear {
+            background-color: #1e293b !important;
+            color: #f87171 !important;
+            border-color: #450a0a !important;
         }
 
         @media (max-width: 600px) {
-            .find-replace-row .toolbar-group {
-                width: 100%;
-            }
-            .action-area {
-                flex-direction: column;
-            }
+            .action-area { flex-direction: column; }
+            .secondary-actions { width: 100%; }
+            .find-replace-row input { flex: 1; }
         }
     </style>
 </head>
@@ -125,20 +151,20 @@
         <div class="editor-wrapper">
             <div class="toolbar">
                 <div class="find-replace-row">
-                    <input type="text" id="findInput" placeholder="Find text..." oninput="resetSearch()">
-                    <input type="text" id="replaceInput" placeholder="Replace with...">
+                    <input type="text" id="findInput" placeholder="Find..." oninput="resetSearch()">
+                    <input type="text" id="replaceInput" placeholder="Replace...">
                     <div class="toolbar-group">
-                        <button onclick="highlightText()" style="background: var(--primary); color: white;">Find</button>
-                        <button onclick="replaceSingle()" style="background: var(--primary); color: white;">Replace</button>
-                        <button onclick="replaceText()" style="background: var(--primary); color: white;">Replace All</button>
+                        <button onclick="highlightText()">Find</button>
+                        <button onclick="replaceSingle()">Replace</button>
+                        <button onclick="replaceText()">Replace All</button>
                         <button onclick="clearFindReplace()" class="btn-small-clear" title="Clear Inputs">✕</button>
                     </div>
                 </div>
                 
                 <div class="toolbar-group" style="margin-top: 5px; display: flex; gap: 5px;">
-                    <button onclick="changeCase('upper')">UPPERCASE</button>
-                    <button onclick="changeCase('lower')">lowercase</button>
-                    <button onclick="changeCase('title')">Title Case</button>
+                    <button onclick="changeCase('upper')" style="background:#64748b; color:white; border:none; border-radius:4px; padding:6px; font-size:11px; flex:1; cursor:pointer;">UPPERCASE</button>
+                    <button onclick="changeCase('lower')" style="background:#64748b; color:white; border:none; border-radius:4px; padding:6px; font-size:11px; flex:1; cursor:pointer;">lowercase</button>
+                    <button onclick="changeCase('title')" style="background:#64748b; color:white; border:none; border-radius:4px; padding:6px; font-size:11px; flex:1; cursor:pointer;">Title Case</button>
                 </div>
             </div>
 
@@ -148,7 +174,7 @@
                 <div class="stats-left">
                     <span>Words: <b id="wordCount">0</b></span>
                     <span>Chars: <b id="charCount">0</b></span>
-                    <span>Reading Time: <b id="readingTime">0m</b></span>
+                    <span>Reading: <b id="readingTime">0m</b></span>
                 </div>
                 <div>
                     Readability: <b id="readabilityScore">N/A</b> 
@@ -166,18 +192,18 @@
             <button class="main-btn btn-purify" onclick="confirmPurify()">✨ Purify Text</button>
             <div class="secondary-actions">
                 <button class="main-btn btn-copy" id="copyBtn" onclick="copyText()">📋 Copy</button>
-                <button class="main-btn btn-download" onclick="downloadText()">💾 Download .txt</button>
+                <button class="main-btn btn-download" onclick="downloadText()">💾 Download</button>
                 <button class="main-btn btn-clear" onclick="clearText()">🗑️ Clear</button>
             </div>
         </div>
 
-        <div id="statusMessage" style="height: 24px; margin-top: 15px; text-align: center; font-weight: 600; color: var(--success); transition: opacity 0.3s; opacity: 0;"></div>
+        <div id="statusMessage" style="height: 24px; margin-top: 15px; text-align: center; font-weight: 600; color: #16a34a; transition: opacity 0.3s; opacity: 0;"></div>
     </div>
 
     <footer>
         <p>&copy; 2026 CleanTextApp.com</p>
         <div style="margin-top: 15px;">
-            <a href="#top" style="color: var(--primary); font-weight: bold; margin-right: 15px; text-decoration: none;">Home</a>
+            <a href="#top" style="color: #4f46e5; font-weight: bold; margin-right: 15px; text-decoration: none;">Home</a>
             <a href="how-to.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">How-To</a>
             <a href="about.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">About</a>
             <a href="contact.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Contact</a>
@@ -187,41 +213,25 @@
     </footer>
 
     <script>
-    // --- CONFIRM PURIFY ---
     function confirmPurify() {
-        const message = "The Purify action will perform the following:\n" +
-                        "• Remove Markdown bold, italics, and headers\n" +
-                        "• Strip code blocks and links\n" +
-                        "• Clean special characters inside words\n" +
-                        "• Apply Sentence Case for better readability\n\n" +
-                        "Do you want to proceed?";
-        if (confirm(message)) {
-            purifyText();
-        }
+        const message = "Purify will:\n• Strip Markdown\n• Clean special characters\n• Format Sentence Case\n\nProceed?";
+        if (confirm(message)) purifyText();
     }
 
-    // --- PURIFY LOGIC ---
     function purifyText() {
         let editor = document.getElementById('editor');
         let text = editor.value;
         if(!text) return;
-
-        text = text.replace(/(\*\*|__)(.*?)\1/g, "$2")
-                   .replace(/(\*|_)(.*?)\1/g, "$2")
-                   .replace(/^#+\s+/gm, "")
-                   .replace(/`{1,3}.*?`{1,3}/gs, "")
-                   .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
-                   .replace(/^[*-]\s+/gm, "• ");
-
+        text = text.replace(/(\*\*|__)(.*?)\1/g, "$2").replace(/(\*|_)(.*?)\1/g, "$2")
+                   .replace(/^#+\s+/gm, "").replace(/`{1,3}.*?`{1,3}/gs, "")
+                   .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1").replace(/^[*-]\s+/gm, "• ");
         text = text.replace(/([a-zA-Z0-9])([^a-zA-Z0-9\-\/\s\.!?])([a-zA-Z0-9])/g, "$1$3");
         text = text.replace(/(^\s*|[.!?]\s+)([a-z])/g, (m) => m.toUpperCase());
-
         editor.value = text.trim();
         updateCounts();
         showStatus("Text Purified! ✨");
     }
 
-    // --- CASE CONVERSION ---
     function changeCase(type) {
         const editor = document.getElementById('editor');
         if (!editor || !editor.value) return; 
@@ -232,22 +242,14 @@
         showStatus("Case Updated");
     }
 
-    // --- WORD FREQUENCY LOGIC ---
     function updateFrequency(text) {
         const freqArea = document.getElementById('frequencyArea');
         const freqList = document.getElementById('wordFreqList');
         if (!text || text.length < 10) { freqArea.style.display = 'none'; return; }
-
         const stopWords = new Set(['the', 'and', 'a', 'to', 'of', 'in', 'is', 'it', 'that', 'on', 'for', 'was', 'as', 'with', 'be', 'this']);
         const words = text.toLowerCase().match(/\b\w+\b/g);
         const counts = {};
-
-        if (words) {
-            words.forEach(w => {
-                if (w.length > 1 && !stopWords.has(w)) counts[w] = (counts[w] || 0) + 1;
-            });
-        }
-
+        if (words) { words.forEach(w => { if (w.length > 1 && !stopWords.has(w)) counts[w] = (counts[w] || 0) + 1; }); }
         const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 8); 
         if (sorted.length > 0) {
             freqArea.style.display = 'block';
@@ -255,11 +257,9 @@
         } else freqArea.style.display = 'none';
     }
 
-    // --- DOWNLOAD LOGIC ---
     function downloadText() {
         const text = document.getElementById('editor').value;
-        if (!text) { showStatus("Nothing to download!"); return; }
-        
+        if (!text) return;
         const blob = new Blob([text], { type: 'text/plain' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -267,33 +267,22 @@
         a.download = `PurifiedText-${new Date().getTime()}.txt`;
         a.click();
         window.URL.revokeObjectURL(url);
-        showStatus("File Downloaded! 💾");
+        showStatus("Downloaded! 💾");
     }
 
-    // --- FIND, REPLACE SINGLE, REPLACE ALL ---
     let searchIndex = 0;
-
     function highlightText() {
         const editor = document.getElementById('editor');
         const findVal = document.getElementById('findInput').value;
         if (!findVal) return;
-
         const index = editor.value.toLowerCase().indexOf(findVal.toLowerCase(), searchIndex);
-        
         if (index !== -1) {
             editor.focus();
             editor.setSelectionRange(index, index + findVal.length);
-            // Move searchIndex forward for next "Find"
             searchIndex = index + findVal.length;
-            showStatus(`Found "${findVal}"`);
         } else {
-            // If no more characters found, check if we started past 0
-            if (searchIndex !== 0) {
-                searchIndex = 0; // Reset for next click
-                alert("No more characters found.");
-            } else {
-                alert("Text not found.");
-            }
+            if (searchIndex !== 0) { searchIndex = 0; alert("No more characters found."); }
+            else alert("Text not found.");
         }
     }
 
@@ -301,23 +290,16 @@
         const editor = document.getElementById('editor');
         const findVal = document.getElementById('findInput').value;
         const replaceVal = document.getElementById('replaceInput').value;
-        
         if (!findVal) return;
-
         const start = editor.selectionStart;
         const end = editor.selectionEnd;
         const selectedText = editor.value.substring(start, end);
-
-        // If something is highlighted and matches our findVal
         if (selectedText.toLowerCase() === findVal.toLowerCase()) {
             editor.setRangeText(replaceVal, start, end, 'end');
             updateCounts();
             searchIndex = editor.selectionStart;
-            highlightText(); // Automatically find the next one
-        } else {
-            // If nothing is highlighted, just find the next instance
             highlightText();
-        }
+        } else { highlightText(); }
     }
 
     function replaceText() {
@@ -329,29 +311,23 @@
         editor.value = editor.value.replace(new RegExp(escapedFind, 'gi'), replaceVal);
         updateCounts();
         resetSearch();
-        showStatus("Replaced All Instances");
+        showStatus("Replaced All");
     }
 
     function resetSearch() { searchIndex = 0; }
-    
     function clearFindReplace() {
         document.getElementById('findInput').value = "";
         document.getElementById('replaceInput').value = "";
         resetSearch();
     }
 
-    // --- COUNTS & READING TIME ---
     function updateCounts() {
         const text = document.getElementById('editor').value.trim();
         const words = text ? text.split(/\s+/).length : 0;
         const chars = text.length;
-        
-        const time = Math.ceil(words / 200);
-        
         document.getElementById('wordCount').innerText = words;
         document.getElementById('charCount').innerText = chars;
-        document.getElementById('readingTime').innerText = words > 0 ? time + "m" : "0m";
-        
+        document.getElementById('readingTime').innerText = Math.ceil(words / 200) + "m";
         updateFrequency(text);
     }
 
@@ -373,14 +349,14 @@
     async function copyText() {
         try {
             await navigator.clipboard.writeText(document.getElementById('editor').value);
-            showStatus("Copied to clipboard!");
-        } catch (err) { showStatus("Copy failed"); }
+            showStatus("Copied! 📋");
+        } catch (err) { showStatus("Failed"); }
     }
 
     function clearText() {
         document.getElementById('editor').value = "";
         updateCounts();
-        showStatus("Workspace Cleared ✨");
+        showStatus("Cleared ✨");
     }
 
     function showStatus(msg) {
@@ -391,7 +367,7 @@
     }
 
     function confirmRefresh() {
-        if (confirm("Refresh page and clear all text?")) window.location.reload();
+        if (confirm("Refresh and clear all text?")) window.location.reload();
         else window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     </script>

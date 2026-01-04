@@ -40,9 +40,11 @@
             flex: 2; 
             min-width: 120px;
             padding: 8px;
-            border: 1px solid #ccc;
+            border: 1px solid var(--border);
             border-radius: 4px;
             font-size: 14px;
+            background: var(--container-bg);
+            color: var(--text-main);
         }
 
         .find-replace-row .toolbar-group {
@@ -50,18 +52,24 @@
             display: flex;
             gap: 4px;
             min-width: fit-content;
+            flex-wrap: wrap;
         }
 
         .find-replace-row button {
-            padding: 6px 10px; 
+            padding: 6px 12px; 
             font-size: 12px;   
             white-space: nowrap;
+            flex: 1;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
         }
 
         .btn-small-clear {
             background: #ff4d4d !important;
             color: white !important;
-            width: 30px;
+            max-width: 35px;
             padding: 0 !important;
             display: flex;
             align-items: center;
@@ -69,9 +77,31 @@
             font-weight: bold;
         }
 
+        /* Fix for secondary actions on mobile */
+        .secondary-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+        
+        .secondary-actions button {
+            flex: 1;
+            min-width: 100px; /* Prevents text squishing */
+        }
+
         .btn-download {
             background: #28a745 !important;
             color: white !important;
+        }
+
+        @media (max-width: 600px) {
+            .find-replace-row .toolbar-group {
+                width: 100%;
+            }
+            .action-area {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -95,16 +125,17 @@
         <div class="editor-wrapper">
             <div class="toolbar">
                 <div class="find-replace-row">
-                    <input type="text" id="findInput" placeholder="Find text..." oninput="resetSearch()" onkeydown="handleEnter(event)">
-                    <input type="text" id="replaceInput" placeholder="Replace with..." onkeydown="handleEnter(event)">
+                    <input type="text" id="findInput" placeholder="Find text..." oninput="resetSearch()">
+                    <input type="text" id="replaceInput" placeholder="Replace with...">
                     <div class="toolbar-group">
                         <button onclick="highlightText()" style="background: var(--primary); color: white;">Find</button>
+                        <button onclick="replaceSingle()" style="background: var(--primary); color: white;">Replace</button>
                         <button onclick="replaceText()" style="background: var(--primary); color: white;">Replace All</button>
                         <button onclick="clearFindReplace()" class="btn-small-clear" title="Clear Inputs">✕</button>
                     </div>
                 </div>
                 
-                <div class="toolbar-group" style="margin-top: 5px;">
+                <div class="toolbar-group" style="margin-top: 5px; display: flex; gap: 5px;">
                     <button onclick="changeCase('upper')">UPPERCASE</button>
                     <button onclick="changeCase('lower')">lowercase</button>
                     <button onclick="changeCase('title')">Title Case</button>
@@ -132,7 +163,7 @@
         </div>
 
         <div class="action-area">
-            <button class="main-btn btn-purify" onclick="purifyText()">✨ Purify Text</button>
+            <button class="main-btn btn-purify" onclick="confirmPurify()">✨ Purify Text</button>
             <div class="secondary-actions">
                 <button class="main-btn btn-copy" id="copyBtn" onclick="copyText()">📋 Copy</button>
                 <button class="main-btn btn-download" onclick="downloadText()">💾 Download .txt</button>
@@ -156,6 +187,19 @@
     </footer>
 
     <script>
+    // --- CONFIRM PURIFY ---
+    function confirmPurify() {
+        const message = "The Purify action will perform the following:\n" +
+                        "• Remove Markdown bold, italics, and headers\n" +
+                        "• Strip code blocks and links\n" +
+                        "• Clean special characters inside words\n" +
+                        "• Apply Sentence Case for better readability\n\n" +
+                        "Do you want to proceed?";
+        if (confirm(message)) {
+            purifyText();
+        }
+    }
+
     // --- PURIFY LOGIC ---
     function purifyText() {
         let editor = document.getElementById('editor');
@@ -226,22 +270,70 @@
         showStatus("File Downloaded! 💾");
     }
 
-    // --- FIND & HIGHLIGHT ---
+    // --- FIND, REPLACE SINGLE, REPLACE ALL ---
     let searchIndex = 0;
+
     function highlightText() {
         const editor = document.getElementById('editor');
         const findVal = document.getElementById('findInput').value;
         if (!findVal) return;
+
         const index = editor.value.toLowerCase().indexOf(findVal.toLowerCase(), searchIndex);
+        
         if (index !== -1) {
             editor.focus();
             editor.setSelectionRange(index, index + findVal.length);
+            // Move searchIndex forward for next "Find"
             searchIndex = index + findVal.length;
             showStatus(`Found "${findVal}"`);
-        } else { searchIndex = 0; showStatus("End of text reached"); }
+        } else {
+            // If no more characters found, check if we started past 0
+            if (searchIndex !== 0) {
+                searchIndex = 0; // Reset for next click
+                alert("No more characters found.");
+            } else {
+                alert("Text not found.");
+            }
+        }
+    }
+
+    function replaceSingle() {
+        const editor = document.getElementById('editor');
+        const findVal = document.getElementById('findInput').value;
+        const replaceVal = document.getElementById('replaceInput').value;
+        
+        if (!findVal) return;
+
+        const start = editor.selectionStart;
+        const end = editor.selectionEnd;
+        const selectedText = editor.value.substring(start, end);
+
+        // If something is highlighted and matches our findVal
+        if (selectedText.toLowerCase() === findVal.toLowerCase()) {
+            editor.setRangeText(replaceVal, start, end, 'end');
+            updateCounts();
+            searchIndex = editor.selectionStart;
+            highlightText(); // Automatically find the next one
+        } else {
+            // If nothing is highlighted, just find the next instance
+            highlightText();
+        }
+    }
+
+    function replaceText() {
+        const findVal = document.getElementById('findInput').value;
+        const replaceVal = document.getElementById('replaceInput').value;
+        const editor = document.getElementById('editor');
+        if (!findVal) return;
+        const escapedFind = findVal.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        editor.value = editor.value.replace(new RegExp(escapedFind, 'gi'), replaceVal);
+        updateCounts();
+        resetSearch();
+        showStatus("Replaced All Instances");
     }
 
     function resetSearch() { searchIndex = 0; }
+    
     function clearFindReplace() {
         document.getElementById('findInput').value = "";
         document.getElementById('replaceInput').value = "";
@@ -254,7 +346,6 @@
         const words = text ? text.split(/\s+/).length : 0;
         const chars = text.length;
         
-        // Estimating Reading Time (Avg 200 words per minute)
         const time = Math.ceil(words / 200);
         
         document.getElementById('wordCount').innerText = words;
@@ -262,17 +353,6 @@
         document.getElementById('readingTime').innerText = words > 0 ? time + "m" : "0m";
         
         updateFrequency(text);
-    }
-
-    function replaceText() {
-        const findVal = document.getElementById('findInput').value;
-        const replaceVal = document.getElementById('replaceInput').value;
-        const editor = document.getElementById('editor');
-        if (!findVal) return;
-        const escapedFind = findVal.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        editor.value = editor.value.replace(new RegExp(escapedFind, 'g'), replaceVal);
-        updateCounts();
-        showStatus("Replaced All Instances");
     }
 
     function toggleTheme() {
@@ -289,8 +369,6 @@
             document.getElementById('themeBtn').innerHTML = '☀️ Light';
         }
     };
-
-    function handleEnter(e) { if (e.key === "Enter") replaceText(); }
 
     async function copyText() {
         try {

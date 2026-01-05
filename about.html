@@ -8,6 +8,35 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
     <link rel="canonical" href="https://cleantextapp.com/about.html" />
+    <style>
+        /* Apply the new professional button theme */
+        .btn-purify {
+            background-color: #4f46e5 !important; /* Deep Indigo */
+            color: white !important;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s ease;
+            border: none;
+        }
+        .btn-purify:hover {
+            background-color: #4338ca !important;
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+        .mission-card {
+            background: rgba(79, 70, 229, 0.05);
+            border-left: 4px solid #4f46e5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .dark-theme .mission-card {
+            background: rgba(79, 70, 229, 0.15);
+        }
+    </style>
 </head>
 <body id="bodyTag">
 
@@ -36,17 +65,18 @@
 
         <section>
             <h2>How It Works</h2>
-            <p>Our tool runs entirely in your web browser. When you paste text, our custom scripts strip away the markdown clutter while preserving the actual structure of your content. We provide real-time readability scores and text manipulation tools (like find-and-replace) to give you total control over the final output.</p>
+            <p>Our tool runs entirely in your web browser. When you paste text, our custom scripts strip away the markdown clutter while preserving the actual structure of your content. We provide real-time readability scores and text manipulation tools to give you total control over the final output.</p>
         </section>
 
         <section>
             <h2>Privacy First</h2>
-            <p>Your data is your business. <strong>CleanTextApp does not store your text.</strong> Everything you paste into our editor stays in your browser's local memory and is never sent to a server. When you refresh or close the page, your text is gone—ensuring your sensitive drafts remain private.</p>
+            <p>Your data is your business. <strong>CleanTextApp does not store your text.</strong> Everything you paste into our editor stays in your browser's local memory and is never sent to a server. When you refresh or close the page, your text is gone.</p>
         </section>
+
         <div style="text-align: center; margin-top: 40px;">
-            <button onclick="history.back()" class="main-btn btn-purify" style="cursor: pointer; border: none; display: inline-flex;">
+            <a href="index.html" class="btn-purify">
                 Back to Purifier
-            </button>
+            </a>
         </div>        
     </div>
 
@@ -55,7 +85,7 @@
         <div style="margin-top: 15px;">
             <a href="index.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Home</a>
             <a href="how-to.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">How-To</a>
-            <a href="about.html" style="color: var(--primary); margin-right: 15px; text-decoration: none; font-weight: bold;">About</a>
+            <a href="about.html" style="color: #4f46e5; margin-right: 15px; text-decoration: none; font-weight: bold;">About</a>
             <a href="contact.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Contact</a>
             <a href="privacy.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Privacy</a>
             <a href="terms.html" style="color: var(--text-muted); text-decoration: none;">Terms</a>
@@ -80,15 +110,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-

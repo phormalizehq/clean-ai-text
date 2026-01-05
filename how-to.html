@@ -3,9 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>How-To Guide | CleanTextApp</title>
+    <title>How-To Guide | CleanTextApp - Master the Purifier</title>
+    <meta name="description" content="Learn how to use CleanTextApp to strip Markdown, calculate readability, and format AI-generated text for professional use.">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+    <link rel="canonical" href="https://cleantextapp.com/how-to.html" />
+    <style>
+        /* Professional Indigo Theme Styling */
+        .btn-purify {
+            background-color: #4f46e5 !important;
+            color: white !important;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s ease;
+            border: none;
+        }
+        .btn-purify:hover {
+            background-color: #4338ca !important;
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+        .step-card {
+            background: var(--counter-bg);
+            border: 1px solid var(--border);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .step-number {
+            background: #4f46e5;
+            color: white;
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        h2 { border-bottom: none; margin-top: 0; }
+        .feature-tag {
+            font-size: 0.8rem;
+            background: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+    </style>
 </head>
 <body id="bodyTag">
 
@@ -19,40 +70,49 @@
 </nav>
 
     <div class="container">
-        <header>
-            <h1>📖 How-To Use AI Text Purifier</h1>
+        <header style="text-align: center;">
+            <h1>📖 How to Use the Purifier</h1>
             <p class="description">Master the tools to make your AI-generated content professional and clean.</p>
         </header>
 
-        <section style="line-height: 1.8;">
-            <h2 style="color: var(--primary);">1. Basic Purification</h2>
+        <div class="step-card">
+            <h2><span class="step-number">1</span> Basic Purification</h2>
             <p>Paste your text from ChatGPT, Claude, or Gemini and click <strong>Purify Text</strong>. Our algorithm automatically:</p>
-            <ul>
+            <ul style="padding-left: 20px; color: var(--text-muted); line-height: 1.8;">
                 <li>Removes Markdown characters (**, #, `).</li>
                 <li>Cleans up symbols <em>inside</em> words while keeping hyphens and slashes.</li>
                 <li>Fixes sentence casing (capitalizing the first letter of sentences).</li>
             </ul>
+        </div>
 
-            <h2 style="color: var(--primary); margin-top: 30px;">2. Find & Replace</h2>
-            <p>Use the toolbar to quickly swap out specific words or phrases. On mobile, these inputs will stack vertically to give you more room to type.</p>
+        <div class="step-card">
+            <h2><span class="step-number">2</span> Find & Replace</h2>
+            <p>Use the toolbar to quickly swap out specific words or phrases. On mobile, these inputs stack vertically to give you more room to type. This is perfect for changing names, dates, or specific terms across your entire document instantly.</p>
+        </div>
 
-            <h2 style="color: var(--primary); margin-top: 30px;">3. Case Formatting</h2>
-            <p>Quickly convert your entire document to <strong>UPPERCASE</strong> or <strong>lowercase</strong> using the one-click buttons in the toolbar.</p>
-        </section> 
+        <div class="step-card">
+            <h2><span class="step-number">3</span> Case Formatting & Metrics</h2>
+            <p>Quickly convert your entire document to <strong>UPPERCASE</strong> or <strong>lowercase</strong> using the one-click buttons in the toolbar. As you work, keep an eye on your <strong>Readability Score</strong> and <strong>Reading Time</strong> to ensure your message is clear and concise.</p>
+        </div>
+
+        <div class="step-card">
+            <h2><span class="step-number">4</span> Local & Private</h2>
+            <p>Everything you do happens in your browser. When you "Purify," no data is sent to a server. Simply copy your clean text and close the tab—your sensitive drafts stay with you.</p>
+        </div>
 
         <div style="text-align: center; margin-top: 40px;">
-            <button onclick="history.back()" class="main-btn btn-purify" style="cursor: pointer; border: none; display: inline-flex;">
-            Back to Purifier
-            </button>
+            <a href="index.html" class="btn-purify">
+                Back to Purifier
+            </a>
         </div>
         
     </div>
 
     <footer>
-        <p>&copy; 2026 CleanTextApp.com</p>
+        <p>&copy; 2026 CleanTextApp.com | Designed for Creators.</p>
         <div style="margin-top: 15px;">
             <a href="index.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Home</a>
-            <a href="how-to.html" style="color: var(--primary); margin-right: 15px; text-decoration: none; font-weight: bold;">How-To</a>
+            <a href="how-to.html" style="color: #4f46e5; margin-right: 15px; text-decoration: none; font-weight: bold;">How-To</a>
             <a href="about.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">About</a>
             <a href="contact.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Contact</a>
             <a href="privacy.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Privacy</a>
@@ -78,7 +138,3 @@
     </script>
 </body>
 </html>
-
-
-
-

@@ -10,6 +10,36 @@
     <link rel="stylesheet" href="style.css">
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+    <style>
+        /* Apply the new professional button theme */
+        .btn-purify {
+            background-color: #4f46e5 !important; /* Deep Indigo */
+            color: white !important;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s ease;
+            border: none;
+        }
+        .btn-purify:hover {
+            background-color: #4338ca !important;
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+        
+        /* Matching the professional link color */
+        .contact-email {
+            font-size: 1.5rem; 
+            color: #4f46e5 !important; 
+            font-weight: bold; 
+            text-decoration: none;
+        }
+        .contact-email:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body id="bodyTag">
 
@@ -25,14 +55,14 @@
     <div class="container" style="text-align: center;">
         <header>
             <h1>Contact Us</h1>
-            <p>Have a question, feedback, or a feature request? We'd love to hear from you.</p>
+            <p class="description">Have a question, feedback, or a feature request? We'd love to hear from you.</p>
         </header>
 
         <section>
             <div style="background: var(--counter-bg); padding: 40px; border-radius: 12px; border: 1px solid var(--border);">
                 <h2 style="border: none;">Email Support</h2>
                 <p>For all inquiries, please reach out to us at:</p>
-                <a href="mailto:support@cleantextapp.com" style="font-size: 1.5rem; color: var(--primary); font-weight: bold; text-decoration: none;">support@cleantextapp.com</a>
+                <a href="mailto:support@cleantextapp.com" class="contact-email">support@cleantextapp.com</a>
                 <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-muted);">We typically respond within 24-48 hours.</p>
             </div>
         </section>
@@ -43,20 +73,20 @@
         </section>
         
         <div style="text-align: center; margin-top: 40px;">
-            <button onclick="history.back()" class="main-btn btn-purify" style="cursor: pointer; border: none; display: inline-flex;">
-            Back to Purifier
-            </button>
+            <a href="index.html" class="btn-purify">
+                Back to Purifier
+            </a>
         </div>
         
     </div>
 
     <footer>
-        <p>&copy; 2026 CleanTextApp.com | Designed for the Next Generation of Creators.</p>
+        <p>&copy; 2026 CleanTextApp.com | Designed for Creators.</p>
         <div style="margin-top: 15px;">
             <a href="index.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Home</a>
-            <a href="tips.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Usage Guide</a>
+            <a href="how-to.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">How-To</a>
             <a href="about.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">About</a>
-            <a href="contact.html" style="color: var(--primary); margin-right: 15px; text-decoration: none; font-weight: bold;">Contact</a>
+            <a href="contact.html" style="color: #4f46e5; margin-right: 15px; text-decoration: none; font-weight: bold;">Contact</a>
             <a href="privacy.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Privacy</a>
             <a href="terms.html" style="color: var(--text-muted); text-decoration: none;">Terms</a>
         </div>
@@ -79,6 +109,4 @@
         };
     </script>
 </body>
-
 </html>
-

@@ -25,13 +25,20 @@ body.dark-theme {
     --success: #34d399;
 }
 
+/* --- Global Mobile Overflow Fix --- */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden; /* Prevents side-scrolling */
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--bg);
     color: var(--text-main);
     transition: background-color 0.3s ease;
-    margin: 0;
-    padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -79,9 +86,9 @@ nav {
     padding: 40px;
     border-radius: 16px;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    margin: 40px 20px;
+    margin: 40px 10px; /* Reduced side margin for mobile safety */
     position: relative;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Crucial: keeps padding inside the width */
 }
 
 .theme-toggle {
@@ -113,13 +120,14 @@ h1 {
 /* --- Updated Toolbar (Mobile Overflow Fix) --- */
 .toolbar {
     display: flex;
-    flex-direction: column; /* Stacks rows vertically */
+    flex-direction: column;
     gap: 10px;
     margin-bottom: 15px;
     background: var(--toolbar-bg);
     padding: 12px;
     border-radius: 12px;
     border: 1px solid var(--border);
+    box-sizing: border-box;
 }
 
 .find-replace-row {
@@ -130,7 +138,7 @@ h1 {
 
 .toolbar input {
     flex: 1;
-    min-width: 0; /* Critical for preventing overflow on mobile */
+    min-width: 0;
     padding: 8px 12px;
     border: 1px solid var(--border);
     border-radius: 6px;
@@ -227,21 +235,24 @@ textarea:focus {
     text-transform: uppercase;
 }
 
-/* --- Action Area (One Line Button Layout) --- */
+/* --- Action Area (Mobile Optimized) --- */
 .action-area {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap; /* Allows wrapping on small screens */
     gap: 12px;
     margin-top: 25px;
     justify-content: center;
     align-items: center;
     width: 100%;
+    box-sizing: border-box;
 }
 
 .secondary-actions {
     display: flex;
     gap: 12px;
     flex: 1.2;
+    min-width: 0; /* Prevents overflow */
 }
 
 .main-btn {
@@ -263,6 +274,7 @@ textarea:focus {
     background-color: var(--primary);
     color: white;
     flex: 1;
+    min-width: 150px; /* Ensures button is clickable and visible */
 }
 
 .btn-purify:hover {
@@ -312,6 +324,7 @@ footer {
     text-align: center;
     width: 100%;
     max-width: 850px;
+    box-sizing: border-box;
 }
 
 footer a {
@@ -329,6 +342,7 @@ footer a:hover {
     .container {
         padding: 20px;
         margin: 20px 10px;
+        width: calc(100% - 20px); /* Keeps it within screen bounds */
     }
 
     .action-area {

@@ -201,7 +201,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2026 CleanTextApp.com</p>
+        <p>&copy; 2026 CleanTextApp.com | Designed for Creators.</p>
         <div style="margin-top: 15px;">
             <a href="#top" style="color: #4f46e5; font-weight: bold; margin-right: 15px; text-decoration: none;">Home</a>
             <a href="how-to.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">How-To</a>
@@ -213,6 +213,7 @@
     </footer>
 
     <script>
+    // Confirm and trigger purification logic
     function confirmPurify() {
         const message = "Purify will:\n• Strip Markdown\n• Clean special characters\n• Format Sentence Case\n\nProceed?";
         if (confirm(message)) purifyText();
@@ -281,7 +282,7 @@
             editor.setSelectionRange(index, index + findVal.length);
             searchIndex = index + findVal.length;
         } else {
-            if (searchIndex !== 0) { searchIndex = 0; alert("No more characters found."); }
+            if (searchIndex !== 0) { searchIndex = 0; alert("No more matches found."); }
             else alert("Text not found.");
         }
     }
@@ -354,9 +355,11 @@
     }
 
     function clearText() {
-        document.getElementById('editor').value = "";
-        updateCounts();
-        showStatus("Cleared ✨");
+        if(confirm("Clear everything?")) {
+            document.getElementById('editor').value = "";
+            updateCounts();
+            showStatus("Cleared ✨");
+        }
     }
 
     function showStatus(msg) {

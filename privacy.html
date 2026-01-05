@@ -8,6 +8,42 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
     <link rel="canonical" href="https://cleantextapp.com/privacy.html" />
+    <style>
+        /* Apply the new professional button theme */
+        .btn-purify {
+            background-color: #4f46e5 !important; /* Deep Indigo */
+            color: white !important;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s ease;
+            border: none;
+        }
+        .btn-purify:hover {
+            background-color: #4338ca !important;
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+        
+        .security-note {
+            background: rgba(79, 70, 229, 0.05);
+            border-left: 4px solid #4f46e5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .dark-theme .security-note {
+            background: rgba(79, 70, 229, 0.15);
+        }
+        
+        .last-updated {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body id="bodyTag">
 
@@ -44,8 +80,8 @@
 
         <section>
             <h2>Advertising Partners</h2>
-            <p>We may use third-party vendors, such as <strong>Google</strong>, who use cookies to serve ads based on a user's prior visits to our website or other websites. Google's use of advertising cookies enables it and its partners to serve ads to our users based on their visit to CleanTextApp and other sites on the Internet.</p>
-            <p>You may opt out of personalized advertising by visiting Ads Settings or <a href="https://www.aboutads.info" target="_blank" style="color: var(--primary);">www.aboutads.info</a>.</p>
+            <p>We may use third-party vendors, such as <strong>Google</strong>, who use cookies to serve ads based on a user's prior visits to our website. Google's use of advertising cookies enables it to serve ads based on your visit to CleanTextApp and other sites on the Internet.</p>
+            <p>You may opt out of personalized advertising by visiting Ads Settings or <a href="https://www.aboutads.info" target="_blank" style="color: #4f46e5; font-weight: 600;">www.aboutads.info</a>.</p>
         </section>
 
         <section>
@@ -59,21 +95,21 @@
         </section>
 
         <div style="text-align: center; margin-top: 40px;">
-            <button onclick="history.back()" class="main-btn btn-purify" style="cursor: pointer; border: none; display: inline-flex;">
-            Back to Purifier
-            </button>
+            <a href="index.html" class="btn-purify">
+                Back to Purifier
+            </a>
         </div>
         
     </div>
 
     <footer>
-    <p>&copy; 2026 CleanTextApp.com | Designed for the Next Generation of Creators.</p>
+    <p>&copy; 2026 CleanTextApp.com | Designed for Creators.</p>
     <div style="margin-top: 15px;">
         <a href="index.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Home</a>
-        <a href="tips.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Usage Guide</a>
+        <a href="how-to.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">How-To</a>
         <a href="about.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">About</a>
         <a href="contact.html" style="color: var(--text-muted); margin-right: 15px; text-decoration: none;">Contact</a>
-        <a href="privacy.html" style="color: var(--primary); margin-right: 15px; text-decoration: none; font-weight: bold;">Privacy</a>
+        <a href="privacy.html" style="color: #4f46e5; margin-right: 15px; text-decoration: none; font-weight: bold;">Privacy</a>
         <a href="terms.html" style="color: var(--text-muted); text-decoration: none;">Terms</a>
     </div>
 </footer>
@@ -96,11 +132,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
